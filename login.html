@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nook SMS — Connexion</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  :root{
+    --navy:#0a0f1e;
+    --navy2:#0f1629;
+    --card:#141d35;
+    --border:#1e2d50;
+    --accent:#e8622a;
+    --accent2:#ff7a45;
+    --text:#e8eaf0;
+    --muted:#6b7694;
+    --green:#22c55e;
+    --font:'Sora',sans-serif;
+    --mono:'JetBrains Mono',monospace;
+  }
+  body{
+    font-family:var(--font);
+    background:var(--navy);
+    color:var(--text);
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+    position:relative;
+  }
+  /* Background grid */
+  body::before{
+    content:'';
+    position:fixed;
+    inset:0;
+    background-image:
+      linear-gradient(rgba(232,98,42,0.03) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(232,98,42,0.03) 1px,transparent 1px);
+    background-size:60px 60px;
+    pointer-events:none;
+  }
+  /* Glow orbs */
+  .orb{
+    position:fixed;
+    border-radius:50%;
+    filter:blur(80px);
+    pointer-events:none;
+    opacity:0.15;
+  }
+  .orb1{width:400px;height:400px;background:#e8622a;top:-100px;right:-100px}
+  .orb2{width:300px;height:300px;background:#1e3a8a;bottom:-50px;left:-50px}
+
+  .container{
+    width:100%;
+    max-width:460px;
+    padding:20px;
+    position:relative;
+    z-index:10;
+    animation:fadeUp .5s ease forwards;
+  }
+  @keyframes fadeUp{
+    from{opacity:0;transform:translateY(20px)}
+    to{opacity:1;transform:translateY(0)}
+  }
+
+  .logo{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:40px;
+  }
+  .logo-mark{
+    width:40px;height:40px;
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
+    border-radius:10px;
+    display:flex;align-items:center;justify-content:center;
+    font-size:18px;font-weight:700;color:white;
+  }
+  .logo-text{font-size:22px;font-weight:700;letter-spacing:-0.5px}
+  .logo-tag{
+    font-size:11px;font-weight:500;
+    background:rgba(232,98,42,0.15);
+    color:var(--accent2);
+    padding:2px 8px;border-radius:4px;
+    border:1px solid rgba(232,98,42,0.2);
+  }
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:20px;
+    padding:40px;
+    box-shadow:0 25px 60px rgba(0,0,0,0.4);
+  }
+  h1{font-size:26px;font-weight:700;margin-bottom:6px;letter-spacing:-0.5px}
+  .subtitle{color:var(--muted);font-size:14px;margin-bottom:32px}
+
+  .form-group{margin-bottom:20px}
+  label{
+    display:block;
+    font-size:13px;font-weight:500;
+    color:var(--muted);
+    margin-bottom:8px;
+    letter-spacing:0.3px;
+  }
+  input{
+    width:100%;
+    background:rgba(255,255,255,0.04);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:13px 16px;
+    color:var(--text);
+    font-family:var(--font);
+    font-size:14px;
+    outline:none;
+    transition:all .2s;
+  }
+  input:focus{
+    border-color:rgba(232,98,42,0.5);
+    background:rgba(232,98,42,0.04);
+    box-shadow:0 0 0 3px rgba(232,98,42,0.08);
+  }
+  input::placeholder{color:rgba(107,118,148,0.6)}
+
+  .api-toggle{
+    display:flex;align-items:center;gap:8px;
+    font-size:13px;color:var(--muted);
+    margin-bottom:20px;cursor:pointer;
+    user-select:none;
+  }
+  .api-toggle input[type=checkbox]{
+    width:16px;height:16px;cursor:pointer;
+    border:1px solid var(--border);
+  }
+
+  .btn{
+    width:100%;
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
+    color:white;
+    border:none;
+    border-radius:10px;
+    padding:14px;
+    font-family:var(--font);
+    font-size:15px;font-weight:600;
+    cursor:pointer;
+    transition:all .2s;
+    letter-spacing:0.2px;
+  }
+  .btn:hover{
+    transform:translateY(-1px);
+    box-shadow:0 8px 25px rgba(232,98,42,0.35);
+  }
+  .btn:active{transform:translateY(0)}
+
+  .divider{
+    display:flex;align-items:center;gap:12px;
+    margin:24px 0;
+    color:var(--muted);font-size:12px;
+  }
+  .divider::before,.divider::after{
+    content:'';flex:1;
+    height:1px;background:var(--border);
+  }
+
+  .api-key-section{
+    background:rgba(255,255,255,0.03);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:14px 16px;
+    display:none;
+  }
+  .api-key-section.active{display:block}
+  .api-key-label{
+    font-size:11px;font-weight:500;
+    color:var(--muted);
+    text-transform:uppercase;
+    letter-spacing:0.5px;
+    margin-bottom:8px;
+  }
+  .api-key-input{
+    font-family:var(--mono);
+    font-size:13px;
+    background:transparent;
+    border:none;
+    padding:0;
+    width:100%;
+  }
+  .api-key-input:focus{box-shadow:none;background:transparent;border:none}
+
+  .footer-link{
+    text-align:center;
+    margin-top:24px;
+    font-size:13px;
+    color:var(--muted);
+  }
+  .footer-link a{color:var(--accent2);text-decoration:none;font-weight:500}
+  .footer-link a:hover{text-decoration:underline}
+
+  .status-dot{
+    display:inline-flex;align-items:center;gap:6px;
+    font-size:12px;color:var(--green);
+    margin-bottom:24px;
+  }
+  .dot{
+    width:7px;height:7px;
+    background:var(--green);
+    border-radius:50%;
+    animation:pulse 2s infinite;
+  }
+  @keyframes pulse{
+    0%,100%{opacity:1}50%{opacity:0.4}
+  }
+</style>
+</head>
+<body>
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+
+<div class="container">
+  <div class="logo">
+    <div class="logo-mark">N</div>
+    <span class="logo-text">Nook SMS</span>
+    <span class="logo-tag">API</span>
+  </div>
+
+  <div class="card">
+    <div class="status-dot">
+      <span class="dot"></span>
+      Tous les systèmes opérationnels
+    </div>
+
+    <h1>Bonsoir 👋</h1>
+    <p class="subtitle">Connectez-vous à votre espace développeur</p>
+
+    <div class="form-group">
+      <label>Adresse email</label>
+      <input type="email" placeholder="dev@votrapp.ma" id="email">
+    </div>
+
+    <div class="form-group">
+      <label>Mot de passe</label>
+      <input type="password" placeholder="••••••••••••" id="password">
+    </div>
+
+    <button class="btn" onclick="login()">Se connecter →</button>
+
+    <div class="divider">ou connexion rapide avec</div>
+
+    <div class="api-key-section active">
+      <div class="api-key-label">Clé API</div>
+      <input class="api-key-input" type="text" placeholder="nk_live_xxxxxxxxxxxxxxxx" id="apikey">
+    </div>
+
+    <br>
+    <button class="btn" style="background:rgba(255,255,255,0.06);border:1px solid var(--border)" onclick="loginWithKey()">
+      Connexion avec clé API
+    </button>
+
+    <div class="footer-link">
+      Pas encore de compte ?
+      <a href="register.html">Créer un compte gratuit</a>
+    </div>
+  </div>
+</div>
+
+<script>
+function login(){
+  const email = document.getElementById('email').value
+  const pass = document.getElementById('password').value
+  if(!email || !pass){ alert('Remplissez tous les champs'); return }
+  // In production: POST /v1/auth/login
+  window.location.href = 'dashboard.html'
+}
+function loginWithKey(){
+  const key = document.getElementById('apikey').value
+  if(!key || !key.startsWith('nk_')){ alert('Clé API invalide. Format: nk_live_xxx'); return }
+  localStorage.setItem('nook_api_key', key)
+  window.location.href = 'dashboard.html'
+}
+</script>
+</body>
+</html>
