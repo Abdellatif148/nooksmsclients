@@ -3,284 +3,213 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nook SMS — Connexion</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
+<title>Nook SMS</title>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="nook.config.js"></script>
 <style>
-  *{margin:0;padding:0;box-sizing:border-box}
-  :root{
-    --navy:#0a0f1e;
-    --navy2:#0f1629;
-    --card:#141d35;
-    --border:#1e2d50;
-    --accent:#e8622a;
-    --accent2:#ff7a45;
-    --text:#e8eaf0;
-    --muted:#6b7694;
-    --green:#22c55e;
-    --font:'Sora',sans-serif;
-    --mono:'JetBrains Mono',monospace;
-  }
-  body{
-    font-family:var(--font);
-    background:var(--navy);
-    color:var(--text);
-    min-height:100vh;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    overflow:hidden;
-    position:relative;
-  }
-  /* Background grid */
-  body::before{
-    content:'';
-    position:fixed;
-    inset:0;
-    background-image:
-      linear-gradient(rgba(232,98,42,0.03) 1px,transparent 1px),
-      linear-gradient(90deg,rgba(232,98,42,0.03) 1px,transparent 1px);
-    background-size:60px 60px;
-    pointer-events:none;
-  }
-  /* Glow orbs */
-  .orb{
-    position:fixed;
-    border-radius:50%;
-    filter:blur(80px);
-    pointer-events:none;
-    opacity:0.15;
-  }
-  .orb1{width:400px;height:400px;background:#e8622a;top:-100px;right:-100px}
-  .orb2{width:300px;height:300px;background:#1e3a8a;bottom:-50px;left:-50px}
-
-  .container{
-    width:100%;
-    max-width:460px;
-    padding:20px;
-    position:relative;
-    z-index:10;
-    animation:fadeUp .5s ease forwards;
-  }
-  @keyframes fadeUp{
-    from{opacity:0;transform:translateY(20px)}
-    to{opacity:1;transform:translateY(0)}
-  }
-
-  .logo{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    margin-bottom:40px;
-  }
-  .logo-mark{
-    width:40px;height:40px;
-    background:linear-gradient(135deg,var(--accent),var(--accent2));
-    border-radius:10px;
-    display:flex;align-items:center;justify-content:center;
-    font-size:18px;font-weight:700;color:white;
-  }
-  .logo-text{font-size:22px;font-weight:700;letter-spacing:-0.5px}
-  .logo-tag{
-    font-size:11px;font-weight:500;
-    background:rgba(232,98,42,0.15);
-    color:var(--accent2);
-    padding:2px 8px;border-radius:4px;
-    border:1px solid rgba(232,98,42,0.2);
-  }
-
-  .card{
-    background:var(--card);
-    border:1px solid var(--border);
-    border-radius:20px;
-    padding:40px;
-    box-shadow:0 25px 60px rgba(0,0,0,0.4);
-  }
-  h1{font-size:26px;font-weight:700;margin-bottom:6px;letter-spacing:-0.5px}
-  .subtitle{color:var(--muted);font-size:14px;margin-bottom:32px}
-
-  .form-group{margin-bottom:20px}
-  label{
-    display:block;
-    font-size:13px;font-weight:500;
-    color:var(--muted);
-    margin-bottom:8px;
-    letter-spacing:0.3px;
-  }
-  input{
-    width:100%;
-    background:rgba(255,255,255,0.04);
-    border:1px solid var(--border);
-    border-radius:10px;
-    padding:13px 16px;
-    color:var(--text);
-    font-family:var(--font);
-    font-size:14px;
-    outline:none;
-    transition:all .2s;
-  }
-  input:focus{
-    border-color:rgba(232,98,42,0.5);
-    background:rgba(232,98,42,0.04);
-    box-shadow:0 0 0 3px rgba(232,98,42,0.08);
-  }
-  input::placeholder{color:rgba(107,118,148,0.6)}
-
-  .api-toggle{
-    display:flex;align-items:center;gap:8px;
-    font-size:13px;color:var(--muted);
-    margin-bottom:20px;cursor:pointer;
-    user-select:none;
-  }
-  .api-toggle input[type=checkbox]{
-    width:16px;height:16px;cursor:pointer;
-    border:1px solid var(--border);
-  }
-
-  .btn{
-    width:100%;
-    background:linear-gradient(135deg,var(--accent),var(--accent2));
-    color:white;
-    border:none;
-    border-radius:10px;
-    padding:14px;
-    font-family:var(--font);
-    font-size:15px;font-weight:600;
-    cursor:pointer;
-    transition:all .2s;
-    letter-spacing:0.2px;
-  }
-  .btn:hover{
-    transform:translateY(-1px);
-    box-shadow:0 8px 25px rgba(232,98,42,0.35);
-  }
-  .btn:active{transform:translateY(0)}
-
-  .divider{
-    display:flex;align-items:center;gap:12px;
-    margin:24px 0;
-    color:var(--muted);font-size:12px;
-  }
-  .divider::before,.divider::after{
-    content:'';flex:1;
-    height:1px;background:var(--border);
-  }
-
-  .api-key-section{
-    background:rgba(255,255,255,0.03);
-    border:1px solid var(--border);
-    border-radius:10px;
-    padding:14px 16px;
-    display:none;
-  }
-  .api-key-section.active{display:block}
-  .api-key-label{
-    font-size:11px;font-weight:500;
-    color:var(--muted);
-    text-transform:uppercase;
-    letter-spacing:0.5px;
-    margin-bottom:8px;
-  }
-  .api-key-input{
-    font-family:var(--mono);
-    font-size:13px;
-    background:transparent;
-    border:none;
-    padding:0;
-    width:100%;
-  }
-  .api-key-input:focus{box-shadow:none;background:transparent;border:none}
-
-  .footer-link{
-    text-align:center;
-    margin-top:24px;
-    font-size:13px;
-    color:var(--muted);
-  }
-  .footer-link a{color:var(--accent2);text-decoration:none;font-weight:500}
-  .footer-link a:hover{text-decoration:underline}
-
-  .status-dot{
-    display:inline-flex;align-items:center;gap:6px;
-    font-size:12px;color:var(--green);
-    margin-bottom:24px;
-  }
-  .dot{
-    width:7px;height:7px;
-    background:var(--green);
-    border-radius:50%;
-    animation:pulse 2s infinite;
-  }
-  @keyframes pulse{
-    0%,100%{opacity:1}50%{opacity:0.4}
-  }
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#070d1f;--card:#0f1829;--border:#1a2640;--accent:#e8622a;--a2:#ff8c5a;--text:#eef0f6;--muted:#5a6890;--green:#22c55e;--F:'Sora',sans-serif;--M:'JetBrains Mono',monospace}
+body{font-family:var(--F);background:var(--bg);color:var(--text);min-height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.grid{position:fixed;inset:0;background-image:linear-gradient(rgba(232,98,42,.04)1px,transparent 1px),linear-gradient(90deg,rgba(232,98,42,.04)1px,transparent 1px);background-size:48px 48px}
+.orb{position:fixed;border-radius:50%;filter:blur(100px);pointer-events:none}
+.o1{width:500px;height:500px;background:rgba(232,98,42,.1);top:-150px;right:-100px}
+.o2{width:400px;height:400px;background:rgba(30,60,140,.12);bottom:-100px;left:-100px}
+.wrap{position:relative;z-index:10;width:100%;max-width:420px;padding:20px;animation:up .5s ease}
+@keyframes up{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}
+.logo{display:flex;align-items:center;gap:10px}
+.lm{width:38px;height:38px;background:linear-gradient(135deg,var(--accent),var(--a2));border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:17px;color:#fff;box-shadow:0 4px 15px rgba(232,98,42,.3)}
+.lt{font-size:20px;font-weight:700;letter-spacing:-.3px}
+.langs{display:flex;gap:4px}
+.lb{background:none;border:1px solid var(--border);border-radius:6px;padding:4px 10px;font-size:12px;font-weight:600;color:var(--muted);cursor:pointer;font-family:var(--F);transition:all .15s}
+.lb.on{background:rgba(232,98,42,.1);border-color:rgba(232,98,42,.3);color:var(--a2)}
+.card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:36px;box-shadow:0 30px 70px rgba(0,0,0,.5)}
+.st{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--green);margin-bottom:22px;background:rgba(34,197,94,.08);padding:5px 12px;border-radius:20px;border:1px solid rgba(34,197,94,.15)}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+h1{font-size:26px;font-weight:700;letter-spacing:-.5px;margin-bottom:4px}
+.sub{color:var(--muted);font-size:14px;margin-bottom:26px}
+.tabs{display:flex;background:rgba(0,0,0,.3);border-radius:10px;padding:4px;margin-bottom:24px}
+.tab{flex:1;padding:9px;border-radius:8px;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;text-align:center;transition:all .2s;border:none;background:none;font-family:var(--F)}
+.tab.on{background:var(--card);color:var(--text);box-shadow:0 2px 8px rgba(0,0,0,.3)}
+.sec{display:none}.sec.on{display:block}
+.fg{margin-bottom:18px}
+label{display:block;font-size:11px;font-weight:700;color:var(--muted);margin-bottom:7px;letter-spacing:.5px;text-transform:uppercase}
+input,select{width:100%;background:rgba(255,255,255,.04);border:1.5px solid var(--border);border-radius:10px;padding:13px 16px;color:var(--text);font-family:var(--F);font-size:14px;outline:none;transition:all .2s;-webkit-appearance:none}
+input:focus,select:focus{border-color:rgba(232,98,42,.5);background:rgba(232,98,42,.03);box-shadow:0 0 0 3px rgba(232,98,42,.08)}
+.mono{font-family:var(--M);font-size:13px}
+input::placeholder{color:rgba(90,104,144,.5)}
+.er{font-size:12px;color:#ef4444;margin-top:6px;display:none;padding:8px 12px;background:rgba(239,68,68,.08);border-radius:6px}
+.btn{width:100%;background:linear-gradient(135deg,var(--accent),var(--a2));color:#fff;border:none;border-radius:10px;padding:14px;font-family:var(--F);font-size:15px;font-weight:600;cursor:pointer;transition:all .2s}
+.btn:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(232,98,42,.35)}
+.btn:active{transform:none}
+.lnk{text-align:center;font-size:13px;color:var(--muted);margin-top:20px}
+.lnk a{color:var(--a2);text-decoration:none;font-weight:600;cursor:pointer}
+.lnk a:hover{text-decoration:underline}
+/* Modal */
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:200;display:none;align-items:center;justify-content:center;backdrop-filter:blur(4px);padding:20px}
+.ov.on{display:flex}
+.modal{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:36px;width:100%;max-width:440px;animation:up .3s ease}
+.modal h2{font-size:22px;font-weight:700;margin-bottom:6px}
+.modal .sub{margin-bottom:24px}
+.mbtns{display:flex;gap:10px;margin-top:20px}
+.mbtn{flex:1;border:none;border-radius:10px;padding:13px;font-family:var(--F);font-size:14px;font-weight:600;cursor:pointer;transition:all .15s}
+.ghost{background:rgba(255,255,255,.05);border:1px solid var(--border);color:var(--text)}
+.ghost:hover{background:rgba(255,255,255,.1)}
+.prim{background:linear-gradient(135deg,var(--accent),var(--a2));color:#fff}
+.prim:hover{transform:translateY(-1px);box-shadow:0 4px 15px rgba(232,98,42,.3)}
+.result{display:none;background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.2);border-radius:10px;padding:16px;margin-bottom:16px;font-size:13px;line-height:1.6}
+.key-box{font-family:var(--M);font-size:12px;background:rgba(0,0,0,.3);padding:10px 12px;border-radius:8px;word-break:break-all;margin-top:8px;color:var(--a2)}
 </style>
 </head>
 <body>
-<div class="orb orb1"></div>
-<div class="orb orb2"></div>
+<div class="grid"></div>
+<div class="orb o1"></div>
+<div class="orb o2"></div>
 
-<div class="container">
-  <div class="logo">
-    <div class="logo-mark">N</div>
-    <span class="logo-text">Nook SMS</span>
-    <span class="logo-tag">API</span>
+<div class="wrap">
+  <div class="top">
+    <div class="logo">
+      <div class="lm">N</div>
+      <span class="lt">Nook SMS</span>
+    </div>
+    <div class="langs">
+      <button class="lb" id="lbfr" onclick="NOOK.setLang('fr')">FR</button>
+      <button class="lb" id="lben" onclick="NOOK.setLang('en')">EN</button>
+    </div>
   </div>
 
   <div class="card">
-    <div class="status-dot">
-      <span class="dot"></span>
-      Tous les systèmes opérationnels
+    <div class="st"><span class="dot"></span><span id="s-status"></span></div>
+    <h1 id="s-title"></h1>
+    <p class="sub" id="s-sub"></p>
+
+    <div class="tabs">
+      <button class="tab on" id="t-key" onclick="sw('key')"><span id="s-tab-key"></span></button>
+      <button class="tab" id="t-admin" onclick="sw('admin')"><span id="s-tab-admin"></span></button>
     </div>
 
-    <h1>Bonsoir 👋</h1>
-    <p class="subtitle">Connectez-vous à votre espace développeur</p>
-
-    <div class="form-group">
-      <label>Adresse email</label>
-      <input type="email" placeholder="dev@votrapp.ma" id="email">
+    <div class="sec on" id="sc-key">
+      <div class="fg">
+        <label id="s-lbl-key"></label>
+        <input class="mono" type="text" id="i-key" placeholder="nk_live_xxxxxxxxxx" autocomplete="off" spellcheck="false">
+        <div class="er" id="e-key"></div>
+      </div>
+      <button class="btn" onclick="doLogin()"><span id="s-btn-key"></span></button>
     </div>
 
-    <div class="form-group">
-      <label>Mot de passe</label>
-      <input type="password" placeholder="••••••••••••" id="password">
+    <div class="sec" id="sc-admin">
+      <div class="fg">
+        <label id="s-lbl-admin"></label>
+        <input class="mono" type="password" id="i-admin" placeholder="••••••••••••••••">
+        <div class="er" id="e-admin"></div>
+      </div>
+      <button class="btn" onclick="doAdmin()"><span id="s-btn-admin"></span></button>
     </div>
 
-    <button class="btn" onclick="login()">Se connecter →</button>
+    <div class="lnk"><span id="s-noacc"></span> <a onclick="openReg()" id="s-reg"></a></div>
+  </div>
+</div>
 
-    <div class="divider">ou connexion rapide avec</div>
-
-    <div class="api-key-section active">
-      <div class="api-key-label">Clé API</div>
-      <input class="api-key-input" type="text" placeholder="nk_live_xxxxxxxxxxxxxxxx" id="apikey">
+<!-- Register Modal -->
+<div class="ov" id="reg-ov">
+  <div class="modal">
+    <h2 id="r-title"></h2>
+    <p class="sub" id="r-sub"></p>
+    <div class="result" id="r-result"></div>
+    <div class="fg"><label id="r-lbl-co"></label><input type="text" id="r-co" placeholder="Rapidio Delivery SARL"></div>
+    <div class="fg"><label id="r-lbl-em"></label><input type="email" id="r-em" placeholder="dev@votreapp.ma"></div>
+    <div class="fg"><label id="r-lbl-ph"></label><input type="text" id="r-ph" placeholder="+212612345678"></div>
+    <div class="fg">
+      <label id="r-lbl-pl"></label>
+      <select id="r-pl">
+        <option value="basic">Basic — 200 DH/mois (10 000 SMS)</option>
+        <option value="standard" selected>Standard — 500 DH/mois (50 000 SMS)</option>
+        <option value="enterprise">Enterprise — Sur mesure</option>
+      </select>
     </div>
-
-    <br>
-    <button class="btn" style="background:rgba(255,255,255,0.06);border:1px solid var(--border)" onclick="loginWithKey()">
-      Connexion avec clé API
-    </button>
-
-    <div class="footer-link">
-      Pas encore de compte ?
-      <a href="register.html">Créer un compte gratuit</a>
+    <div class="mbtns">
+      <button class="mbtn ghost" onclick="closeReg()" id="r-cancel"></button>
+      <button class="mbtn prim" onclick="doReg()" id="r-create"></button>
     </div>
   </div>
 </div>
 
 <script>
-function login(){
-  const email = document.getElementById('email').value
-  const pass = document.getElementById('password').value
-  if(!email || !pass){ alert('Remplissez tous les champs'); return }
-  // In production: POST /v1/auth/login
-  window.location.href = 'dashboard.html'
+const L=NOOK.getLang()
+document.getElementById('lb'+L).classList.add('on')
+
+const S={
+  fr:{status:'Tous les systèmes opérationnels',title:'Bonjour 👋',sub:'Connectez-vous à votre espace développeur','tab-key':'Clé API','tab-admin':'Admin','lbl-key':'Votre clé API','lbl-admin':'Clé administrateur','btn-key':'Connexion →','btn-admin':'Accès Admin →',noacc:'Pas de compte ?',reg:'Créer un compte gratuit','r-title':'Créer un compte','r-sub':'50 DH de crédits offerts à l\'inscription','r-lbl-co':'Nom entreprise','r-lbl-em':'Email','r-lbl-ph':'Téléphone','r-lbl-pl':'Plan',cancel:'Annuler',create:'Créer mon compte →'},
+  en:{status:'All systems operational',title:'Hello 👋',sub:'Sign in to your developer space','tab-key':'API Key','tab-admin':'Admin','lbl-key':'Your API Key','lbl-admin':'Admin key','btn-key':'Sign in →','btn-admin':'Admin Access →',noacc:'No account yet?',reg:'Create free account','r-title':'Create account','r-sub':'Get 50 DH credits on signup','r-lbl-co':'Company name','r-lbl-em':'Email','r-lbl-ph':'Phone','r-lbl-pl':'Plan',cancel:'Cancel',create:'Create Account →'}
 }
-function loginWithKey(){
-  const key = document.getElementById('apikey').value
-  if(!key || !key.startsWith('nk_')){ alert('Clé API invalide. Format: nk_live_xxx'); return }
-  localStorage.setItem('nook_api_key', key)
-  window.location.href = 'dashboard.html'
+const T=S[L]||S.fr
+function set(id,t){const e=document.getElementById(id);if(e)e.textContent=t}
+set('s-status',T.status);set('s-title',T.title);set('s-sub',T.sub)
+set('s-tab-key',T['tab-key']);set('s-tab-admin',T['tab-admin'])
+set('s-lbl-key',T['lbl-key']);set('s-lbl-admin',T['lbl-admin'])
+set('s-btn-key',T['btn-key']);set('s-btn-admin',T['btn-admin'])
+set('s-noacc',T.noacc);set('s-reg',T.reg)
+set('r-title',T['r-title']);set('r-sub',T['r-sub'])
+set('r-lbl-co',T['r-lbl-co']);set('r-lbl-em',T['r-lbl-em'])
+set('r-lbl-ph',T['r-lbl-ph']);set('r-lbl-pl',T['r-lbl-pl'])
+set('r-cancel',T.cancel);set('r-create',T.create)
+
+function sw(tab){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'))
+  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'))
+  document.getElementById('t-'+tab).classList.add('on')
+  document.getElementById('sc-'+tab).classList.add('on')
 }
+
+function showErr(id,msg){const e=document.getElementById(id);e.textContent=msg;e.style.display='block'}
+function hideErr(id){document.getElementById(id).style.display='none'}
+
+function doLogin(){
+  const key=document.getElementById('i-key').value.trim()
+  if(!key.startsWith('nk_')){showErr('e-key',L==='fr'?'Format invalide: nk_live_xxxxx':'Invalid format: nk_live_xxxxx');return}
+  hideErr('e-key')
+  NOOK.setKey(key)
+  NOOK.toast(L==='fr'?'Connexion réussie !':'Signed in!','success')
+  setTimeout(()=>location.href='dashboard.html',400)
+}
+
+function doAdmin(){
+  const key=document.getElementById('i-admin').value.trim()
+  if(!key){showErr('e-admin',L==='fr'?'Clé requise':'Key required');return}
+  hideErr('e-admin')
+  NOOK.setAdminKey(key)
+  NOOK.toast(L==='fr'?'Accès admin':'Admin access','success')
+  setTimeout(()=>location.href='admin.html',400)
+}
+
+function openReg(){document.getElementById('reg-ov').classList.add('on')}
+function closeReg(){document.getElementById('reg-ov').classList.remove('on');document.getElementById('r-result').style.display='none'}
+
+async function doReg(){
+  const co=document.getElementById('r-co').value.trim()
+  const em=document.getElementById('r-em').value.trim()
+  const ph=document.getElementById('r-ph').value.trim()
+  const pl=document.getElementById('r-pl').value
+  const res=document.getElementById('r-result')
+  if(!co||!em||!ph){NOOK.toast(T['fill_fields']||'Fill all fields','error');return}
+  try{
+    const d=await NOOK.call('/v1/clients/register',{method:'POST',body:{company_name:co,email:em,phone:ph,plan:pl}})
+    if(d.api_key){
+      res.style.display='block'
+      res.innerHTML=`<b style="color:var(--green)">✓ ${L==='fr'?'Compte créé !':'Account created!'}</b><br><span style="color:var(--muted);font-size:12px">${L==='fr'?'Sauvegardez votre clé :':'Save your key:'}</span><div class="key-box">${d.api_key}</div><button onclick="useKey('${d.api_key}')" style="margin-top:12px;width:100%;background:var(--accent);border:none;border-radius:8px;padding:10px;color:#fff;font-family:var(--F);font-size:14px;font-weight:600;cursor:pointer">${L==='fr'?'Utiliser →':'Use →'}</button>`
+    }else{
+      res.style.display='block';res.style.background='rgba(239,68,68,.08)';res.style.borderColor='rgba(239,68,68,.2)'
+      res.innerHTML=`<span style="color:#ef4444">✗ ${d.error||'Error'}</span>`
+    }
+  }catch(e){NOOK.toast(L==='fr'?'Serveur non disponible':'Server unavailable','error')}
+}
+
+function useKey(k){NOOK.setKey(k);closeReg();setTimeout(()=>location.href='dashboard.html',300)}
+
+document.getElementById('i-key').onkeydown=e=>{if(e.key==='Enter')doLogin()}
+document.getElementById('i-admin').onkeydown=e=>{if(e.key==='Enter')doAdmin()}
+document.getElementById('reg-ov').onclick=e=>{if(e.target===document.getElementById('reg-ov'))closeReg()}
 </script>
 </body>
 </html>

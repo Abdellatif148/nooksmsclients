@@ -3,652 +3,539 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nook SMS — Mon Espace</title>
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<title>Nook SMS — Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="config.js"><\/script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --navy:#0a0f1e;--navy2:#0f1629;--card:#141d35;
-  --border:#1e2d50;--accent:#e8622a;--accent2:#ff7a45;
-  --text:#e8eaf0;--muted:#6b7694;--muted2:#4a5578;
-  --green:#22c55e;--red:#ef4444;--yellow:#f59e0b;
-  --blue:#3b82f6;--font:'Sora',sans-serif;--mono:'JetBrains Mono',monospace;
+  --bg:#07090f;--bg2:#0c1018;--card:#111520;--card2:#161c2a;
+  --border:#1a2236;--b2:#202840;
+  --accent:#f97316;--a2:#fb923c;--adim:rgba(249,115,22,0.12);
+  --text:#f0f2f8;--t2:#8a94b0;--t3:#4a5470;
+  --green:#10b981;--gdim:rgba(16,185,129,0.1);
+  --red:#ef4444;--rdim:rgba(239,68,68,0.08);
+  --blue:#3b82f6;--bdim:rgba(59,130,246,0.1);
+  --yellow:#f59e0b;
+  --font:"Plus Jakarta Sans",sans-serif;--mono:"JetBrains Mono",monospace;
 }
-body{font-family:var(--font);background:var(--navy);color:var(--text);min-height:100vh;display:flex}
-body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(232,98,42,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(232,98,42,0.02) 1px,transparent 1px);background-size:60px 60px;pointer-events:none;z-index:0}
-
-/* SIDEBAR */
-.sidebar{
-  width:240px;min-height:100vh;
-  background:var(--navy2);
-  border-right:1px solid var(--border);
-  display:flex;flex-direction:column;
-  position:fixed;left:0;top:0;
-  z-index:100;
-}
-.sidebar-logo{
-  padding:24px 20px;
-  display:flex;align-items:center;gap:10px;
-  border-bottom:1px solid var(--border);
-}
-.logo-mark{
-  width:34px;height:34px;
-  background:linear-gradient(135deg,var(--accent),var(--accent2));
-  border-radius:8px;display:flex;align-items:center;justify-content:center;
-  font-weight:700;font-size:15px;color:white;flex-shrink:0;
-}
-.logo-text{font-size:17px;font-weight:700;letter-spacing:-0.3px}
-
-.nav{flex:1;padding:16px 12px}
-.nav-section{margin-bottom:24px}
-.nav-label{
-  font-size:10px;font-weight:600;
-  color:var(--muted2);text-transform:uppercase;
-  letter-spacing:0.8px;padding:0 8px;margin-bottom:6px;
-}
-.nav-item{
-  display:flex;align-items:center;gap:10px;
-  padding:10px 10px;border-radius:8px;
-  color:var(--muted);font-size:14px;font-weight:500;
-  cursor:pointer;transition:all .15s;
-  text-decoration:none;margin-bottom:2px;
-}
-.nav-item:hover{background:rgba(255,255,255,0.05);color:var(--text)}
-.nav-item.active{background:rgba(232,98,42,0.12);color:var(--accent2)}
-.nav-item svg{width:16px;height:16px;flex-shrink:0}
-.badge{
-  margin-left:auto;
-  background:rgba(232,98,42,0.15);color:var(--accent2);
-  font-size:11px;font-weight:600;
-  padding:2px 7px;border-radius:20px;
-}
-
-.sidebar-bottom{
-  padding:16px 12px;
-  border-top:1px solid var(--border);
-}
-.user-box{
-  display:flex;align-items:center;gap:10px;
-  padding:10px;border-radius:8px;
-  background:rgba(255,255,255,0.03);
-}
-.avatar{
-  width:32px;height:32px;border-radius:8px;
-  background:linear-gradient(135deg,#1e3a8a,var(--accent));
-  display:flex;align-items:center;justify-content:center;
-  font-size:13px;font-weight:600;color:white;flex-shrink:0;
-}
-.user-name{font-size:13px;font-weight:500}
-.user-plan{font-size:11px;color:var(--muted)}
-
-/* MAIN */
-.main{margin-left:240px;flex:1;position:relative;z-index:1}
-
-/* TOPBAR */
-.topbar{
-  height:64px;
-  border-bottom:1px solid var(--border);
-  display:flex;align-items:center;justify-content:space-between;
-  padding:0 32px;
-  background:rgba(10,15,30,0.8);
-  backdrop-filter:blur(10px);
-  position:sticky;top:0;z-index:50;
-}
-.page-title{font-size:18px;font-weight:600;letter-spacing:-0.3px}
-.topbar-right{display:flex;align-items:center;gap:12px}
-.btn-small{
-  padding:8px 16px;border-radius:8px;
-  font-family:var(--font);font-size:13px;font-weight:500;
-  cursor:pointer;transition:all .15s;border:none;
-}
-.btn-primary{
-  background:linear-gradient(135deg,var(--accent),var(--accent2));
-  color:white;
-}
-.btn-primary:hover{transform:translateY(-1px);box-shadow:0 4px 15px rgba(232,98,42,0.3)}
-.btn-ghost{
-  background:rgba(255,255,255,0.06);
-  border:1px solid var(--border);color:var(--text);
-}
-.btn-ghost:hover{background:rgba(255,255,255,0.1)}
-
-/* CONTENT */
-.content{padding:32px}
-
-/* CREDITS BANNER */
-.credits-banner{
-  background:linear-gradient(135deg,rgba(232,98,42,0.12),rgba(232,98,42,0.04));
-  border:1px solid rgba(232,98,42,0.2);
-  border-radius:16px;
-  padding:24px 28px;
-  display:flex;align-items:center;justify-content:space-between;
-  margin-bottom:28px;
-}
-.credits-left h2{font-size:13px;font-weight:500;color:var(--muted);margin-bottom:4px}
-.credits-amount{font-size:36px;font-weight:700;letter-spacing:-1px;line-height:1}
-.credits-amount span{font-size:18px;color:var(--muted);font-weight:400}
-.credits-bar-wrap{margin-top:10px}
-.credits-bar{
-  height:4px;background:rgba(255,255,255,0.08);
-  border-radius:2px;width:200px;overflow:hidden;
-}
-.credits-fill{
-  height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));
-  border-radius:2px;width:65%;
-  transition:width .5s ease;
-}
-.credits-right{text-align:right}
-.plan-badge{
-  display:inline-block;
-  background:rgba(232,98,42,0.15);color:var(--accent2);
-  font-size:12px;font-weight:600;
-  padding:4px 12px;border-radius:20px;
-  border:1px solid rgba(232,98,42,0.2);
-  text-transform:uppercase;letter-spacing:0.5px;
-  margin-bottom:12px;
-}
-
-/* STATS GRID */
-.stats-grid{
-  display:grid;grid-template-columns:repeat(4,1fr);
-  gap:16px;margin-bottom:28px;
-}
-.stat-card{
-  background:var(--card);border:1px solid var(--border);
-  border-radius:14px;padding:20px;
-  transition:all .2s;
-}
-.stat-card:hover{border-color:rgba(232,98,42,0.3);transform:translateY(-2px)}
-.stat-icon{
-  width:36px;height:36px;border-radius:8px;
-  display:flex;align-items:center;justify-content:center;
-  font-size:16px;margin-bottom:14px;
-}
-.stat-value{font-size:26px;font-weight:700;letter-spacing:-0.5px;line-height:1}
-.stat-label{font-size:12px;color:var(--muted);margin-top:4px;font-weight:500}
-.stat-change{
-  font-size:11px;margin-top:8px;
-  display:flex;align-items:center;gap:4px;
-}
-.up{color:var(--green)}.down{color:var(--red)}
-
-/* API KEY */
-.api-section{
-  background:var(--card);border:1px solid var(--border);
-  border-radius:14px;padding:24px;
-  margin-bottom:28px;
-}
-.section-header{
-  display:flex;align-items:center;justify-content:space-between;
-  margin-bottom:20px;
-}
-.section-title{font-size:16px;font-weight:600;letter-spacing:-0.2px}
-.section-sub{font-size:13px;color:var(--muted);margin-top:2px}
-.api-key-display{
-  background:rgba(0,0,0,0.3);
-  border:1px solid var(--border);
-  border-radius:10px;
-  padding:14px 16px;
-  display:flex;align-items:center;justify-content:space-between;
-  gap:12px;
-  margin-bottom:16px;
-}
-.api-key-text{
-  font-family:var(--mono);font-size:13px;
-  color:var(--text);flex:1;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-}
-.copy-btn{
-  background:rgba(255,255,255,0.06);
-  border:1px solid var(--border);
-  border-radius:7px;padding:7px 14px;
-  font-size:12px;font-weight:500;color:var(--text);
-  cursor:pointer;white-space:nowrap;transition:all .15s;
-  font-family:var(--font);
-}
-.copy-btn:hover{background:rgba(232,98,42,0.12);border-color:rgba(232,98,42,0.3);color:var(--accent2)}
-.api-stats{
-  display:flex;gap:24px;
-}
-.api-stat{
-  display:flex;flex-direction:column;gap:3px;
-}
-.api-stat-val{font-size:14px;font-weight:600}
-.api-stat-key{font-size:11px;color:var(--muted)}
-
-/* CHARTS ROW */
-.charts-row{display:grid;grid-template-columns:2fr 1fr;gap:16px;margin-bottom:28px}
-
-.chart-card{
-  background:var(--card);border:1px solid var(--border);
-  border-radius:14px;padding:24px;
-}
-/* Simple bar chart with CSS */
-.bar-chart{
-  display:flex;align-items:flex-end;gap:6px;
-  height:100px;margin-top:20px;
-}
-.bar{
-  flex:1;border-radius:4px 4px 0 0;
-  background:rgba(232,98,42,0.2);
-  transition:all .3s;position:relative;cursor:pointer;
-  min-height:4px;
-}
-.bar:hover{background:rgba(232,98,42,0.5)}
-.bar.today{background:linear-gradient(180deg,var(--accent2),var(--accent))}
-.bar-label{
-  font-size:10px;color:var(--muted2);text-align:center;
-  margin-top:6px;
-}
-.chart-labels{display:flex;gap:6px;margin-top:4px}
-.chart-labels span{flex:1;font-size:10px;color:var(--muted2);text-align:center}
-
-/* Network donut */
-.network-list{margin-top:16px;display:flex;flex-direction:column;gap:12px}
-.network-item{display:flex;align-items:center;gap:10px}
-.network-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
-.network-name{font-size:13px;flex:1}
-.network-pct{font-size:13px;font-weight:600;color:var(--text)}
-.network-bar{flex:2;height:4px;background:rgba(255,255,255,0.06);border-radius:2px;overflow:hidden}
-.network-fill{height:100%;border-radius:2px}
-
-/* MESSAGES TABLE */
-.table-card{
-  background:var(--card);border:1px solid var(--border);
-  border-radius:14px;overflow:hidden;
-}
-.table-header{
-  padding:20px 24px;
-  border-bottom:1px solid var(--border);
-  display:flex;align-items:center;justify-content:space-between;
-}
+html,body{height:100%}
+body{font-family:var(--font);background:var(--bg);color:var(--text);display:flex;min-height:100vh;font-size:14px}
+.sidebar{width:244px;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:100}
+.s-top{padding:18px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:9px}
+.logo{width:34px;height:34px;background:linear-gradient(135deg,#f97316,#fb923c);border-radius:9px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;color:#fff;flex-shrink:0}
+.logo-n{font-size:16px;font-weight:800;letter-spacing:-.3px}
+.logo-t{margin-left:auto;font-size:10px;font-weight:700;background:var(--adim);color:var(--a2);padding:2px 7px;border-radius:20px;border:1px solid rgba(249,115,22,.2)}
+.nav{flex:1;padding:10px 8px;overflow-y:auto}
+.ng{margin-bottom:18px}
+.ng-label{font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.8px;padding:0 8px;margin-bottom:4px}
+.nl{display:flex;align-items:center;gap:9px;padding:9px 10px;border-radius:8px;color:var(--t2);font-size:13px;font-weight:500;cursor:pointer;transition:all .15s;text-decoration:none;border:none;background:transparent;width:100%;text-align:left;margin-bottom:1px}
+.nl:hover{background:rgba(255,255,255,.04);color:var(--text)}
+.nl.on{background:var(--adim);color:var(--a2)}
+.nl svg{width:15px;height:15px;flex-shrink:0;opacity:.7}
+.nl.on svg{opacity:1}
+.nc{margin-left:auto;background:var(--adim);color:var(--a2);font-size:10px;font-weight:700;padding:1px 6px;border-radius:20px}
+.s-foot{padding:10px 8px;border-top:1px solid var(--border)}
+.uc{display:flex;align-items:center;gap:9px;padding:9px 10px;border-radius:9px;background:var(--card);border:1px solid var(--border)}
+.uav{width:30px;height:30px;border-radius:7px;background:linear-gradient(135deg,#1d4ed8,#f97316);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;color:#fff;flex-shrink:0}
+.un{font-size:13px;font-weight:600;line-height:1.2}
+.up2{font-size:11px;color:var(--t2)}
+.ulout{margin-left:auto;background:none;border:none;color:var(--t3);cursor:pointer;padding:4px;border-radius:5px;transition:color .15s}
+.ulout:hover{color:var(--red)}
+.main{margin-left:244px;flex:1;display:flex;flex-direction:column;min-height:100vh}
+.topbar{height:58px;border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 24px;gap:12px;background:rgba(7,9,15,.9);backdrop-filter:blur(12px);position:sticky;top:0;z-index:90}
+.tb-title{font-size:16px;font-weight:700;letter-spacing:-.3px;flex:1}
+.lt{display:flex;background:var(--card);border:1px solid var(--border);border-radius:7px;overflow:hidden}
+.lb{padding:5px 10px;font-size:12px;font-weight:600;border:none;background:transparent;color:var(--t2);cursor:pointer;transition:all .15s;font-family:var(--font)}
+.lb.on{background:var(--adim);color:var(--a2)}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:8px;font-family:var(--font);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;border:none;text-decoration:none;white-space:nowrap}
+.bp{background:linear-gradient(135deg,#f97316,#fb923c);color:#fff;box-shadow:0 2px 10px rgba(249,115,22,.25)}
+.bp:hover{transform:translateY(-1px);box-shadow:0 4px 18px rgba(249,115,22,.35)}
+.bg2{background:var(--card);border:1px solid var(--border);color:var(--text)}
+.bg2:hover{border-color:var(--b2)}
+.bd{background:var(--rdim);border:1px solid rgba(239,68,68,.2);color:var(--red)}
+.bs{background:var(--gdim);border:1px solid rgba(16,185,129,.2);color:var(--green)}
+.bsm{padding:6px 12px;font-size:12px}
+.bxs{padding:4px 9px;font-size:11px}
+.btn[disabled]{opacity:.5;cursor:not-allowed;transform:none!important}
+.content{padding:24px;flex:1}
+.cred-card{background:linear-gradient(135deg,rgba(249,115,22,.09),rgba(249,115,22,.02));border:1px solid rgba(249,115,22,.18);border-radius:14px;padding:22px 26px;display:flex;align-items:center;gap:28px;margin-bottom:22px;position:relative;overflow:hidden}
+.cred-card::before{content:"";position:absolute;top:-50px;right:-50px;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(249,115,22,.07),transparent 70%)}
+.cm{flex:1}
+.clb{font-size:11px;font-weight:700;color:var(--a2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px}
+.ca{font-size:36px;font-weight:800;letter-spacing:-1.2px;line-height:1}
+.ca sub{font-size:16px;font-weight:500;color:var(--t2);vertical-align:baseline}
+.cbg{height:4px;background:rgba(255,255,255,.05);border-radius:2px;width:260px;overflow:hidden;margin-top:10px}
+.cbf{height:100%;border-radius:2px;background:linear-gradient(90deg,#f97316,#fb923c);transition:width .7s ease}
+.csub{font-size:12px;color:var(--t2);margin-top:4px}
+.cra{display:flex;flex-direction:column;gap:7px;align-items:flex-end}
+.pchip{display:inline-flex;align-items:center;gap:5px;background:var(--adim);border:1px solid rgba(249,115,22,.18);color:var(--a2);font-size:11px;font-weight:700;padding:3px 11px;border-radius:20px;text-transform:uppercase;letter-spacing:.4px}
+.sg{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;margin-bottom:22px}
+.stat{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px;transition:border-color .2s,transform .2s;cursor:default}
+.stat:hover{border-color:var(--b2);transform:translateY(-2px)}
+.si{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:17px;margin-bottom:12px}
+.sn{font-size:26px;font-weight:800;letter-spacing:-.5px;line-height:1}
+.sl{font-size:12px;color:var(--t2);margin-top:3px;font-weight:500}
+.sb{display:inline-flex;align-items:center;gap:3px;font-size:11px;font-weight:600;margin-top:7px;padding:2px 7px;border-radius:20px}
+.sup2{background:var(--gdim);color:var(--green)}
+.sdwn{background:var(--rdim);color:var(--red)}
+.sne{background:rgba(255,255,255,.05);color:var(--t2)}
+.sec{background:var(--card);border:1px solid var(--border);border-radius:12px;margin-bottom:18px;overflow:hidden}
+.sh{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.st{font-size:15px;font-weight:700;letter-spacing:-.2px}
+.ss{font-size:12px;color:var(--t2);margin-top:1px}
+.sb2{padding:20px}
+.cr{display:grid;grid-template-columns:3fr 2fr;gap:15px;margin-bottom:18px}
+.bw{height:100px;display:flex;align-items:flex-end;gap:3px;margin:14px 0 4px}
+.bc{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px}
+.bi{width:100%;border-radius:4px 4px 0 0;background:rgba(249,115,22,.14);transition:background .2s;cursor:pointer;position:relative;min-height:3px}
+.bi:hover{background:rgba(249,115,22,.38)}
+.bi.td{background:linear-gradient(180deg,#fb923c,#f97316)}
+.bd2{font-size:10px;color:var(--t3);font-weight:500}
+.btt{position:absolute;bottom:calc(100% + 5px);left:50%;transform:translateX(-50%);background:#1a2236;border:1px solid var(--b2);color:var(--text);font-size:11px;font-weight:600;padding:3px 7px;border-radius:5px;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .15s;z-index:10}
+.bi:hover .btt{opacity:1}
+.nl2{display:flex;flex-direction:column;gap:11px;margin-top:12px}
+.nr{display:flex;align-items:center;gap:9px}
+.nd{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.nn{font-size:13px;font-weight:500;flex:1}
+.nt{flex:2;height:4px;background:rgba(255,255,255,.05);border-radius:2px;overflow:hidden}
+.nf{height:100%;border-radius:2px;transition:width .6s ease}
+.np{font-size:13px;font-weight:700;width:34px;text-align:right}
+.tw{overflow-x:auto}
 table{width:100%;border-collapse:collapse}
-thead th{
-  padding:12px 24px;
-  font-size:11px;font-weight:600;
-  color:var(--muted2);text-transform:uppercase;letter-spacing:0.5px;
-  text-align:left;background:rgba(255,255,255,0.02);
-  border-bottom:1px solid var(--border);
-}
-tbody tr{border-bottom:1px solid rgba(30,45,80,0.5);transition:background .1s}
-tbody tr:hover{background:rgba(255,255,255,0.02)}
-tbody tr:last-child{border:none}
-td{padding:14px 24px;font-size:13px;vertical-align:middle}
-.phone-mono{font-family:var(--mono);font-size:12px}
-.msg-preview{max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--muted)}
-.status-badge{
-  display:inline-flex;align-items:center;gap:5px;
-  padding:4px 10px;border-radius:20px;
-  font-size:11px;font-weight:600;
-}
-.delivered{background:rgba(34,197,94,0.1);color:var(--green)}
-.sent{background:rgba(59,130,246,0.1);color:var(--blue)}
-.failed{background:rgba(239,68,68,0.1);color:var(--red)}
-.pending{background:rgba(245,158,11,0.1);color:var(--yellow)}
-.network-tag{
-  font-size:11px;color:var(--muted);
-  background:rgba(255,255,255,0.04);
-  padding:3px 8px;border-radius:4px;
-  font-family:var(--mono);
-}
-.cost{font-family:var(--mono);font-size:12px;color:var(--muted)}
-.empty-state{
-  text-align:center;padding:48px;color:var(--muted);
-}
-.empty-icon{font-size:36px;margin-bottom:12px}
-
-/* MOBILE */
-@media(max-width:768px){
-  .sidebar{transform:translateX(-100%)}
-  .main{margin-left:0}
-  .stats-grid{grid-template-columns:1fr 1fr}
-  .charts-row{grid-template-columns:1fr}
-}
+th{padding:9px 18px;font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.6px;text-align:left;background:rgba(0,0,0,.15);border-bottom:1px solid var(--border);white-space:nowrap}
+td{padding:12px 18px;font-size:13px;border-bottom:1px solid rgba(26,34,54,.5)}
+tr:last-child td{border:none}
+tr:hover td{background:rgba(255,255,255,.012)}
+.mono{font-family:var(--mono);font-size:12px}
+.pill{display:inline-flex;align-items:center;gap:3px;padding:3px 8px;border-radius:20px;font-size:11px;font-weight:700}
+.pg{background:var(--gdim);color:var(--green)}
+.pb{background:var(--bdim);color:var(--blue)}
+.pr{background:var(--rdim);color:var(--red)}
+.py{background:rgba(245,158,11,.1);color:var(--yellow)}
+.pgr{background:rgba(255,255,255,.05);color:var(--t2)}
+.empty{text-align:center;padding:44px;color:var(--t2)}
+.sp{width:18px;height:18px;border:2px solid rgba(255,255,255,.15);border-top-color:currentColor;border-radius:50%;animation:spin .6s linear infinite;display:inline-block}
+@keyframes spin{to{transform:rotate(360deg)}}
+#toast{position:fixed;bottom:22px;right:22px;z-index:999;display:flex;flex-direction:column;gap:7px}
+.ti{background:#1a2236;border:1px solid var(--b2);border-radius:9px;padding:11px 15px;font-size:13px;display:flex;align-items:center;gap:9px;box-shadow:0 8px 28px rgba(0,0,0,.4);animation:tIn .25s ease;min-width:260px;max-width:360px}
+@keyframes tIn{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}
+.ts{border-left:3px solid var(--green)}.te{border-left:3px solid var(--red)}.ti2{border-left:3px solid var(--blue)}
+.mb{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;z-index:200}
+.mb.op{display:flex}
+.md{background:var(--card2);border:1px solid var(--b2);border-radius:14px;padding:26px;width:100%;max-width:420px;box-shadow:0 20px 50px rgba(0,0,0,.5);animation:mIn .22s ease}
+@keyframes mIn{from{transform:scale(.95);opacity:0}to{transform:scale(1);opacity:1}}
+.md h3{font-size:18px;font-weight:700;margin-bottom:5px}
+.md p{font-size:13px;color:var(--t2);margin-bottom:18px}
+.mf{display:flex;justify-content:flex-end;gap:9px;margin-top:18px}
+.fg{display:flex;flex-direction:column;gap:5px;margin-bottom:14px}
+.fg.full{grid-column:1/-1}
+.fl{font-size:12px;font-weight:600;color:var(--t2)}
+.fi{background:rgba(0,0,0,.3);border:1px solid var(--border);border-radius:8px;padding:10px 13px;color:var(--text);font-family:var(--font);font-size:13px;outline:none;transition:border-color .15s,box-shadow .15s;width:100%}
+.fi:focus{border-color:rgba(249,115,22,.4);box-shadow:0 0 0 3px rgba(249,115,22,.06)}
+.fi::placeholder{color:var(--t3)}
+textarea.fi{resize:vertical;min-height:76px;font-family:var(--font)}
+.cc{font-size:11px;color:var(--t3);text-align:right}
+.wbox{background:rgba(245,158,11,.05);border:1px solid rgba(245,158,11,.14);border-radius:8px;padding:10px 13px;font-size:12px;color:rgba(251,191,36,.85);margin-top:12px;display:flex;align-items:flex-start;gap:7px}
+.rm{font-size:13px;padding:9px 13px;border-radius:8px;display:flex;align-items:center;gap:7px}
+.rs{background:var(--gdim);color:var(--green);border:1px solid rgba(16,185,129,.15)}
+.re{background:var(--rdim);color:var(--red);border:1px solid rgba(239,68,68,.15)}
+.sg2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.ak{background:rgba(0,0,0,.3);border:1px solid var(--border);border-radius:9px;padding:12px 14px;display:flex;align-items:center;gap:9px}
+.av{font-family:var(--mono);font-size:13px;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.aa{display:flex;gap:5px;flex-shrink:0}
+@media(max-width:860px){.sg{grid-template-columns:1fr 1fr}.cr{grid-template-columns:1fr}.sg2{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
-
-<!-- SIDEBAR -->
 <aside class="sidebar">
-  <div class="sidebar-logo">
-    <div class="logo-mark">N</div>
-    <span class="logo-text">Nook SMS</span>
+  <div class="s-top">
+    <div class="logo">N</div>
+    <span class="logo-n">Nook SMS</span>
+    <span class="logo-t">API</span>
   </div>
-
   <nav class="nav">
-    <div class="nav-section">
-      <div class="nav-label">Principal</div>
-      <a href="dashboard.html" class="nav-item active">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
-        Tableau de bord
-      </a>
-      <a href="#" class="nav-item" onclick="showSection('send')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22,2 15,22 11,13 2,9"/></svg>
-        Envoyer un SMS
-      </a>
-      <a href="#" class="nav-item">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-        Messages
-        <span class="badge">247</span>
-      </a>
+    <div class="ng">
+      <div class="ng-label" id="tl-main">Principal</div>
+      <button class="nl on" onclick="pg('ov')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><span id="tl-ov">Vue d'ensemble</span></button>
+      <button class="nl" onclick="pg('snd')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22,2 15,22 11,13 2,9"/></svg><span id="tl-snd">Envoyer SMS</span></button>
+      <button class="nl" onclick="pg('msgs')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span id="tl-msgs">Messages</span><span class="nc" id="nav-cnt">0</span></button>
     </div>
-
-    <div class="nav-section">
-      <div class="nav-label">Analytiques</div>
-      <a href="#" class="nav-item">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/></svg>
-        Statistiques
-      </a>
-      <a href="#" class="nav-item">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2z"/><path d="M12 6v6l4 2"/></svg>
-        Meilleurs horaires
-      </a>
+    <div class="ng">
+      <div class="ng-label" id="tl-ana">Analytiques</div>
+      <button class="nl" onclick="pg('ana')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/></svg><span id="tl-stats">Statistiques</span></button>
     </div>
-
-    <div class="nav-section">
-      <div class="nav-label">Compte</div>
-      <a href="#" class="nav-item">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
-        Facturation
-      </a>
-      <a href="docs.html" class="nav-item">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
-        Documentation
-      </a>
-      <a href="login.html" class="nav-item">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16,17 21,12 16,7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-        Déconnexion
-      </a>
+    <div class="ng">
+      <div class="ng-label" id="tl-acc">Compte</div>
+      <button class="nl" onclick="pg('key')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg><span id="tl-key">Clé API</span></button>
+      <a href="docs.html" class="nl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg><span id="tl-docs">Documentation</span></a>
     </div>
   </nav>
-
-  <div class="sidebar-bottom">
-    <div class="user-box">
-      <div class="avatar">R</div>
-      <div>
-        <div class="user-name">Rapidio Dev</div>
-        <div class="user-plan">Plan Standard</div>
-      </div>
+  <div class="s-foot">
+    <div class="uc">
+      <div class="uav" id="uav">?</div>
+      <div><div class="un" id="uname">...</div><div class="up2" id="uplan">—</div></div>
+      <button class="ulout" onclick="logout()" title="Déconnexion"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16,17 21,12 16,7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></button>
     </div>
   </div>
 </aside>
 
-<!-- MAIN -->
 <main class="main">
   <div class="topbar">
-    <div class="page-title">Tableau de bord</div>
-    <div class="topbar-right">
-      <button class="btn-small btn-ghost" onclick="showSection('send')">+ Envoyer SMS</button>
-      <button class="btn-small btn-primary" onclick="window.location.href='docs.html'">Documentation →</button>
+    <span class="tb-title" id="ptitle">Vue d'ensemble</span>
+    <div style="display:flex;align-items:center;gap:9px">
+      <div class="lt"><button class="lb on" onclick="setL('fr')">FR</button><button class="lb" onclick="setL('en')">EN</button></div>
+      <button class="btn bg2 bsm" onclick="loadOv()"><span id="tl-ref">↻ Actualiser</span></button>
+      <button class="btn bp bsm" onclick="pg('snd')">+ <span id="tl-ss">Envoyer SMS</span></button>
     </div>
   </div>
-
   <div class="content">
 
-    <!-- SEND SMS SECTION (hidden by default) -->
-    <div id="send-section" style="display:none;margin-bottom:28px">
-      <div class="api-section">
-        <div class="section-header">
-          <div>
-            <div class="section-title">📤 Envoyer un SMS</div>
-            <div class="section-sub">Test rapide — pour les envois automatiques utilisez l'API</div>
-          </div>
-          <button class="copy-btn" onclick="showSection('hide')">✕ Fermer</button>
+    <!-- OVERVIEW -->
+    <div id="p-ov">
+      <div class="cred-card">
+        <div class="cm">
+          <div class="clb" id="tl-ca">Crédits disponibles</div>
+          <div class="ca"><span id="cval">—</span> <sub>DH</sub></div>
+          <div class="cbg"><div class="cbf" id="cbar" style="width:0%"></div></div>
+          <div class="csub" id="cmsg">— messages restants</div>
         </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
-          <div>
-            <label style="font-size:12px;color:var(--muted);display:block;margin-bottom:6px">Numéro destinataire</label>
-            <input id="send-to" type="text" placeholder="+212612345678" style="width:100%;background:rgba(0,0,0,0.3);border:1px solid var(--border);border-radius:8px;padding:11px 14px;color:var(--text);font-family:var(--mono);font-size:13px;outline:none">
-          </div>
-          <div>
-            <label style="font-size:12px;color:var(--muted);display:block;margin-bottom:6px">Expéditeur</label>
-            <input id="send-from" type="text" placeholder="MONAPP" style="width:100%;background:rgba(0,0,0,0.3);border:1px solid var(--border);border-radius:8px;padding:11px 14px;color:var(--text);font-family:var(--mono);font-size:13px;outline:none">
-          </div>
+        <div class="cra">
+          <div class="pchip" id="pchip">—</div>
+          <button class="btn bp bsm" onclick="document.getElementById('rm').classList.add('op')">+ <span id="tl-rch">Recharger</span></button>
+          <div style="font-size:11px;color:var(--t2)" id="tl-pm">Virement • CMI • CashPlus</div>
         </div>
-        <div style="margin-top:12px">
-          <label style="font-size:12px;color:var(--muted);display:block;margin-bottom:6px">Message</label>
-          <textarea id="send-msg" placeholder="Votre code de vérification est: 4829" style="width:100%;background:rgba(0,0,0,0.3);border:1px solid var(--border);border-radius:8px;padding:11px 14px;color:var(--text);font-family:var(--font);font-size:13px;outline:none;resize:vertical;min-height:80px"></textarea>
+      </div>
+      <div class="sg">
+        <div class="stat"><div class="si" style="background:var(--adim)">📤</div><div class="sn" id="sm">—</div><div class="sl" id="tl-tm">SMS ce mois</div><div class="sb sne" id="smb">—</div></div>
+        <div class="stat"><div class="si" style="background:var(--gdim)">✓</div><div class="sn" id="sr">—</div><div class="sl" id="tl-dr">Taux de livraison</div><div class="sb sup2" id="srb">—</div></div>
+        <div class="stat"><div class="si" style="background:var(--bdim)">⚡</div><div class="sn" id="sd">—</div><div class="sl" id="tl-tod">Aujourd'hui</div><div class="sb sne" id="sdb">—</div></div>
+        <div class="stat"><div class="si" style="background:rgba(245,158,11,.1)">💰</div><div class="sn" id="sc">—</div><div class="sl" id="tl-ms">Dépensé ce mois</div><div class="sb sne">0.20 DH/SMS</div></div>
+      </div>
+      <div class="cr">
+        <div class="sec">
+          <div class="sh"><div><div class="st" id="tl-wa">Activité cette semaine</div><div class="ss" id="tl-mpd">Messages par jour</div></div></div>
+          <div class="sb2" style="padding-bottom:14px"><div class="bw" id="barchart"></div></div>
         </div>
-        <div style="margin-top:12px;display:flex;justify-content:space-between;align-items:center">
-          <span id="char-count" style="font-size:12px;color:var(--muted)">0/160 caractères</span>
-          <button class="btn-small btn-primary" onclick="sendSMS()">Envoyer →</button>
+        <div class="sec">
+          <div class="sh"><div><div class="st" id="tl-bn">Par opérateur</div><div class="ss" id="tl-tm2">Ce mois</div></div></div>
+          <div class="sb2"><div class="nl2" id="netlist"><div style="color:var(--t2);font-size:13px" id="tl-ld">Chargement...</div></div></div>
         </div>
-        <div id="send-result" style="margin-top:12px;font-size:13px;display:none"></div>
+      </div>
+      <div class="sec">
+        <div class="sh">
+          <div><div class="st" id="tl-rm">Messages récents</div><div class="ss" id="tl-l10">10 derniers envois</div></div>
+          <button class="btn bg2 bsm" onclick="pg('msgs')"><span id="tl-sa">Voir tous</span> →</button>
+        </div>
+        <div class="tw"><table><thead><tr><th id="tl-tto">Destinataire</th><th id="tl-tmsg">Message</th><th id="tl-tnet">Réseau</th><th id="tl-tst">Statut</th><th id="tl-tco">Coût</th><th id="tl-tdt">Date</th></tr></thead><tbody id="rtbody"><tr><td colspan="6"><div class="empty"><div class="sp"></div></div></td></tr></tbody></table></div>
       </div>
     </div>
 
-    <!-- CREDITS BANNER -->
-    <div class="credits-banner">
-      <div class="credits-left">
-        <h2>Crédits disponibles</h2>
-        <div class="credits-amount"><span id="credits-display">325</span> <span>DH</span></div>
-        <div style="font-size:12px;color:var(--muted);margin-top:4px">≈ <span id="msgs-remaining">1,625</span> messages restants</div>
-        <div class="credits-bar-wrap">
-          <div class="credits-bar"><div class="credits-fill" id="credits-bar"></div></div>
+    <!-- SEND SMS -->
+    <div id="p-snd" style="display:none">
+      <div class="sec">
+        <div class="sh"><div><div class="st" id="tl-sst">Envoyer un SMS</div><div class="ss" id="tl-ssub">Envoi manuel — utilisez l'API pour les envois automatiques</div></div></div>
+        <div class="sb2">
+          <div class="sg2">
+            <div class="fg">
+              <div class="fl" id="tl-rec">Destinataire</div>
+              <input class="fi" type="tel" id="s-to" placeholder="+212612345678" oninput="vphn(this)">
+              <span style="font-size:11px;color:var(--t3)" id="tl-ph">Format: +212XXXXXXXXX</span>
+            </div>
+            <div class="fg">
+              <div class="fl" id="tl-sid">Identifiant expéditeur</div>
+              <input class="fi" type="text" id="s-from" placeholder="MONAPP" maxlength="11">
+              <span style="font-size:11px;color:var(--t3)" id="tl-sh">Max 11 caractères</span>
+            </div>
+          </div>
+          <div class="fg" style="margin-top:4px">
+            <div class="fl" id="tl-mt">Type</div>
+            <select class="fi" id="s-type">
+              <option value="transactional" id="tl-tr">Transactionnel (OTP, confirmation)</option>
+              <option value="promotional" id="tl-pr">Promotionnel</option>
+            </select>
+          </div>
+          <div class="fg" style="margin-top:4px">
+            <div class="fl" id="tl-msg">Message</div>
+            <textarea class="fi" id="s-msg" maxlength="160" oninput="ucc(this)" placeholder="Votre code est: 4829. Valide 10 min."></textarea>
+            <div style="display:flex;justify-content:space-between"><span style="font-size:11px;color:var(--t3)" id="tl-mc">Max 160 caractères</span><span class="cc" id="ccount">0/160</span></div>
+          </div>
+          <div style="background:rgba(0,0,0,.2);border:1px solid var(--border);border-radius:8px;padding:11px 14px;margin-top:4px;display:flex;justify-content:space-between">
+            <span style="font-size:13px;color:var(--t2)" id="tl-ec">Coût estimé:</span>
+            <span style="font-family:var(--mono);font-weight:700;color:var(--a2)">0.20 DH</span>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-top:14px;gap:10px">
+            <div id="sres" style="display:none;flex:1"></div>
+            <div style="display:flex;gap:9px;margin-left:auto">
+              <button class="btn bg2 bsm" onclick="clr()" id="tl-cl">Effacer</button>
+              <button class="btn bp" id="sbtn" onclick="doSend()"><span id="tl-sn">Envoyer →</span></button>
+            </div>
+          </div>
         </div>
-        <div style="font-size:11px;color:var(--muted);margin-top:4px">Recharge recommandée sous 3 jours</div>
       </div>
-      <div class="credits-right">
-        <div class="plan-badge">Standard</div>
-        <br>
-        <button class="btn-small btn-primary" onclick="alert('Intégrez CMI ou virement bancaire pour recharger')">+ Recharger les crédits</button>
-        <div style="font-size:11px;color:var(--muted);margin-top:8px">Virement • CMI • CashPlus</div>
+      <div class="sec">
+        <div class="sh"><div class="st" id="tl-tpl">Modèles rapides</div></div>
+        <div class="sb2" style="display:grid;grid-template-columns:repeat(3,1fr);gap:9px">
+          <button class="btn bg2" style="flex-direction:column;align-items:flex-start;height:auto;padding:12px 13px;gap:3px" onclick="tpl('otp')"><span style="font-size:13px;font-weight:600">🔐 <span id="tl-t1">OTP</span></span><span style="font-size:11px;color:var(--t2);font-weight:400" id="tl-t1s">Code vérification</span></button>
+          <button class="btn bg2" style="flex-direction:column;align-items:flex-start;height:auto;padding:12px 13px;gap:3px" onclick="tpl('dlv')"><span style="font-size:13px;font-weight:600">📦 <span id="tl-t2">Livraison</span></span><span style="font-size:11px;color:var(--t2);font-weight:400" id="tl-t2s">Notification colis</span></button>
+          <button class="btn bg2" style="flex-direction:column;align-items:flex-start;height:auto;padding:12px 13px;gap:3px" onclick="tpl('rdv')"><span style="font-size:13px;font-weight:600">📅 <span id="tl-t3">RDV</span></span><span style="font-size:11px;color:var(--t2);font-weight:400" id="tl-t3s">Rappel rendez-vous</span></button>
+        </div>
       </div>
     </div>
 
-    <!-- STATS -->
-    <div class="stats-grid">
-      <div class="stat-card">
-        <div class="stat-icon" style="background:rgba(232,98,42,0.12);color:var(--accent2)">📤</div>
-        <div class="stat-value" id="stat-sent">247</div>
-        <div class="stat-label">SMS envoyés ce mois</div>
-        <div class="stat-change up">↑ +18% vs mois dernier</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-icon" style="background:rgba(34,197,94,0.1);color:var(--green)">✓</div>
-        <div class="stat-value" id="stat-rate">98.4%</div>
-        <div class="stat-label">Taux de livraison</div>
-        <div class="stat-change up">↑ Excellent</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-icon" style="background:rgba(59,130,246,0.1);color:var(--blue)">⚡</div>
-        <div class="stat-value">2.1s</div>
-        <div class="stat-label">Temps moyen livraison</div>
-        <div class="stat-change up">↑ Rapide</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-icon" style="background:rgba(245,158,11,0.1);color:var(--yellow)">💰</div>
-        <div class="stat-value">49.4 <span style="font-size:14px;color:var(--muted)">DH</span></div>
-        <div class="stat-label">Dépensé ce mois</div>
-        <div class="stat-change" style="color:var(--muted)">0.20 DH / message</div>
+    <!-- MESSAGES -->
+    <div id="p-msgs" style="display:none">
+      <div class="sec">
+        <div class="sh">
+          <div><div class="st" id="tl-am">Tous les messages</div><div class="ss" id="mcnt-lbl">—</div></div>
+          <div style="display:flex;gap:7px;align-items:center">
+            <select class="fi" id="fst" onchange="loadMsgs()" style="padding:6px 9px;width:auto">
+              <option value="" id="tl-as">Tous les statuts</option>
+              <option value="delivered" id="tl-dlv">Livré</option>
+              <option value="sent" id="tl-snt">Envoyé</option>
+              <option value="failed" id="tl-fld">Échoué</option>
+            </select>
+            <button class="btn bg2 bsm" onclick="loadMsgs()">↻</button>
+          </div>
+        </div>
+        <div class="tw">
+          <table><thead><tr><th>ID</th><th id="tl-tto2">Destinataire</th><th id="tl-tmsg2">Message</th><th id="tl-tnet2">Réseau</th><th id="tl-tst2">Statut</th><th id="tl-tco2">Coût</th><th id="tl-tdt2">Date</th></tr></thead><tbody id="mtbody"><tr><td colspan="7"><div class="empty"><div class="sp"></div></div></td></tr></tbody></table>
+        </div>
+        <div style="padding:12px 18px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:12px;color:var(--t2)" id="pinfo">—</span>
+          <div style="display:flex;gap:5px">
+            <button class="btn bg2 bsm" id="pp" onclick="chpg(-1)" disabled>←</button>
+            <button class="btn bg2 bsm" id="np" onclick="chpg(1)">→</button>
+          </div>
+        </div>
       </div>
     </div>
 
-    <!-- CHARTS -->
-    <div class="charts-row">
-      <div class="chart-card">
-        <div class="section-header">
-          <div>
-            <div class="section-title">Activité cette semaine</div>
-            <div class="section-sub">Messages envoyés par jour</div>
-          </div>
-        </div>
-        <div class="bar-chart" id="bar-chart"></div>
-        <div class="chart-labels" id="chart-labels"></div>
-      </div>
-      <div class="chart-card">
-        <div class="section-title">Par opérateur</div>
-        <div class="section-sub" style="color:var(--muted);font-size:12px;margin-top:2px">Ce mois</div>
-        <div class="network-list">
-          <div class="network-item">
-            <div class="network-dot" style="background:#e8622a"></div>
-            <div class="network-name">Maroc Telecom</div>
-            <div class="network-bar"><div class="network-fill" style="width:58%;background:#e8622a"></div></div>
-            <div class="network-pct">58%</div>
-          </div>
-          <div class="network-item">
-            <div class="network-dot" style="background:#f59e0b"></div>
-            <div class="network-name">Inwi</div>
-            <div class="network-bar"><div class="network-fill" style="width:27%;background:#f59e0b"></div></div>
-            <div class="network-pct">27%</div>
-          </div>
-          <div class="network-item">
-            <div class="network-dot" style="background:#3b82f6"></div>
-            <div class="network-name">Orange</div>
-            <div class="network-bar"><div class="network-fill" style="width:15%;background:#3b82f6"></div></div>
-            <div class="network-pct">15%</div>
-          </div>
-        </div>
+    <!-- ANALYTICS -->
+    <div id="p-ana" style="display:none">
+      <div class="sec">
+        <div class="sh"><div class="st" id="tl-at">Analytiques détaillées</div></div>
+        <div class="sb2" id="anabody"><div style="text-align:center;padding:36px;color:var(--t2)"><div class="sp" style="margin:0 auto 10px"></div><span id="tl-loa">Chargement...</span></div></div>
       </div>
     </div>
 
     <!-- API KEY -->
-    <div class="api-section">
-      <div class="section-header">
-        <div>
-          <div class="section-title">🔑 Votre clé API</div>
-          <div class="section-sub">Utilisez cette clé dans votre application</div>
+    <div id="p-key" style="display:none">
+      <div class="sec">
+        <div class="sh"><div><div class="st" id="tl-akm">Gestion clé API</div><div class="ss" id="tl-aks">Authentification pour Nook SMS API</div></div></div>
+        <div class="sb2">
+          <div class="fg">
+            <div class="fl" id="tl-yak">Votre clé API</div>
+            <div class="ak"><div class="av" id="akdisp">nk_live_••••••••••••••••••••••••••••••••</div><div class="aa"><button class="btn bg2 bxs" id="rvbtn" onclick="togRev()"><span id="tl-rv">👁 Afficher</span></button><button class="btn bg2 bxs" onclick="cpKey()"><span id="tl-cp">Copier</span></button></div></div>
+            <div class="wbox">⚠️ <span id="tl-akw">Ne partagez jamais votre clé API.</span></div>
+          </div>
+          <button class="btn bd bsm" style="margin-top:6px" onclick="document.getElementById('rotm').classList.add('op')">⟳ <span id="tl-rk">Régénérer</span></button>
+          <div style="margin-top:22px">
+            <div class="fl" id="tl-qu">Utilisation rapide</div>
+            <div style="background:#020408;border:1px solid var(--border);border-radius:9px;padding:16px 18px;margin-top:7px;font-family:var(--mono);font-size:12px;line-height:1.8;color:#a8b4d0">
+              <span style="color:#6b7ba4">// JavaScript</span><br>
+              <span style="color:#c678dd">const</span> r = <span style="color:#c678dd">await</span> <span style="color:#61afef">fetch</span>(<span id="apiurlsnip" style="color:#98c379">'https://api-nook.up.railway.app/v1/sms/send'</span>,{<br>
+              &nbsp;&nbsp;method:<span style="color:#98c379">'POST'</span>,headers:{<span style="color:#e06c75">'Authorization'</span>:<span style="color:#98c379">'Bearer <span id="ksnip">...</span>'</span>},<br>
+              &nbsp;&nbsp;body:<span style="color:#61afef">JSON.stringify</span>({to:<span style="color:#98c379">'+212612345678'</span>,message:<span style="color:#98c379">'Code: 4829'</span>})<br>
+              })
+            </div>
+          </div>
         </div>
-        <button class="copy-btn" style="color:var(--red)" onclick="if(confirm('Régénérer la clé ? Votre ancienne clé sera invalide.')){}">
-          ⟳ Régénérer
-        </button>
-      </div>
-      <div class="api-key-display">
-        <div class="api-key-text" id="api-key-text">nk_live_••••••••••••••••••••••••••••</div>
-        <button class="copy-btn" id="reveal-btn" onclick="revealKey()">👁 Afficher</button>
-        <button class="copy-btn" onclick="copyKey()">Copier</button>
-      </div>
-      <div style="background:rgba(245,158,11,0.06);border:1px solid rgba(245,158,11,0.15);border-radius:8px;padding:12px 16px;font-size:12px;color:rgba(245,158,11,0.9)">
-        ⚠️ Ne partagez jamais votre clé API. En cas de compromission, régénérez-la immédiatement.
-      </div>
-    </div>
-
-    <!-- RECENT MESSAGES -->
-    <div class="table-card">
-      <div class="table-header">
-        <div>
-          <div class="section-title">Messages récents</div>
-          <div class="section-sub" style="font-size:12px;color:var(--muted);margin-top:2px">Les 10 derniers envois</div>
-        </div>
-        <button class="btn-small btn-ghost" onclick="loadMessages()">↻ Actualiser</button>
-      </div>
-      <div id="messages-table">
-        <table>
-          <thead>
-            <tr>
-              <th>Destinataire</th>
-              <th>Message</th>
-              <th>Réseau</th>
-              <th>Statut</th>
-              <th>Coût</th>
-              <th>Date</th>
-            </tr>
-          </thead>
-          <tbody id="messages-tbody"></tbody>
-        </table>
       </div>
     </div>
 
   </div>
 </main>
 
+<!-- RECHARGE MODAL -->
+<div class="mb" id="rm">
+  <div class="md">
+    <h3 id="tl-rmt">💳 Recharger les crédits</h3>
+    <p id="tl-rms">Contactez-nous pour recharger votre compte</p>
+    <div style="background:rgba(0,0,0,.2);border:1px solid var(--border);border-radius:9px;padding:14px;font-size:13px;line-height:1.9">
+      <div style="font-weight:600;margin-bottom:8px" id="tl-bd">Virement bancaire:</div>
+      <div><span style="color:var(--t2)" id="tl-ben">Bénéficiaire:</span> Nook Tech SARL</div>
+      <div><span style="color:var(--t2)">RIB:</span> <span class="mono">XXX XXX XXXXXXXXXXXX XX</span></div>
+      <div><span style="color:var(--t2)" id="tl-bnk">Banque:</span> CIH Bank</div>
+      <div style="margin-top:8px;padding:8px;background:rgba(249,115,22,.06);border-radius:6px;font-size:12px;color:var(--a2)" id="tl-tn">Objet: votre email + montant</div>
+    </div>
+    <div class="mf">
+      <button class="btn bg2 bsm" onclick="document.getElementById('rm').classList.remove('op')" id="tl-cls">Fermer</button>
+      <button class="btn bp bsm" onclick="window.open('mailto:support@nook.ma?subject=Recharge credits')"><span id="tl-eml">Envoyer email →</span></button>
+    </div>
+  </div>
+</div>
+
+<!-- ROTATE KEY MODAL -->
+<div class="mb" id="rotm">
+  <div class="md">
+    <h3>⚠️ <span id="tl-rotit">Régénérer la clé?</span></h3>
+    <p id="tl-rotw">Votre ancienne clé sera invalide immédiatement. Mettez à jour toutes vos applications.</p>
+    <div class="mf">
+      <button class="btn bg2 bsm" onclick="document.getElementById('rotm').classList.remove('op')" id="tl-can">Annuler</button>
+      <button class="btn bd bsm" onclick="doRot()" id="tl-cfr">Confirmer</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
 <script>
-const API_BASE = 'http://localhost:3000'
-const API_KEY = localStorage.getItem('nook_api_key') || 'nk_live_eaed35d58d6d7f8962c7e074c33eadcaf7...'
+const CFG=window.NOOK_CONFIG||{};
+const API=CFG.API_BASE||'https://api-nook.up.railway.app';
+let AKEY=localStorage.getItem('nk')||'';
+let curpg=1,revealed=false;
+if(!AKEY){location.href='login.html';}
 
-// Build bar chart
-const days = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim']
-const data = [28,35,22,41,38,15,24]
-const maxVal = Math.max(...data)
-const chart = document.getElementById('bar-chart')
-const labels = document.getElementById('chart-labels')
-days.forEach((d,i)=>{
-  const bar = document.createElement('div')
-  bar.className = 'bar' + (i===6?' today':'')
-  bar.style.height = (data[i]/maxVal*90)+'%'
-  bar.title = `${d}: ${data[i]} SMS`
-  chart.appendChild(bar)
-  const lbl = document.createElement('span')
-  lbl.textContent = d
-  labels.appendChild(lbl)
-})
-
-// Messages table
-const messages = [
-  {to:'+212612345678',msg:'Votre code: 4829',network:'maroc_telecom',status:'delivered',cost:'0.20',date:'08:23'},
-  {to:'+212698765432',msg:'Commande #1247 confirmée. Livraison...',network:'orange',status:'delivered',cost:'0.20',date:'07:45'},
-  {to:'+212670123456',msg:'Votre colis est en route vers...',network:'inwi',status:'sent',cost:'0.20',date:'07:12'},
-  {to:'+212642738171',msg:'Promotion: -20% sur votre proch...',network:'maroc_telecom',status:'delivered',cost:'0.20',date:'06:55'},
-  {to:'+212651234567',msg:'Test depuis Nook SMS API',network:'inwi',status:'failed',cost:'0.00',date:'06:30'},
-]
-
-const tbody = document.getElementById('messages-tbody')
-messages.forEach(m=>{
-  const statusClass = {delivered:'delivered',sent:'sent',failed:'failed',pending:'pending'}[m.status]||'pending'
-  const statusLabel = {delivered:'Livré ✓',sent:'Envoyé',failed:'Échoué ✗',pending:'En attente'}[m.status]
-  tbody.innerHTML += `
-    <tr>
-      <td><span class="phone-mono">${m.to}</span></td>
-      <td><div class="msg-preview">${m.msg}</div></td>
-      <td><span class="network-tag">${m.network}</span></td>
-      <td><span class="status-badge ${statusClass}">${statusLabel}</span></td>
-      <td><span class="cost">${m.cost} DH</span></td>
-      <td style="color:var(--muted);font-size:12px">Aujourd'hui ${m.date}</td>
-    </tr>`
-})
-
-function revealKey(){
-  document.getElementById('api-key-text').textContent = API_KEY
-  document.getElementById('reveal-btn').textContent = '🙈 Masquer'
-  document.getElementById('reveal-btn').onclick = hideKey
+const TR={
+  fr:{main:'Principal',ov:'Vue d\'ensemble',snd:'Envoyer SMS',msgs:'Messages',ana:'Analytiques',stats:'Statistiques',acc:'Compte',key:'Clé API',docs:'Documentation',ref:'↻ Actualiser',ss:'Envoyer SMS',ca:'Crédits disponibles',mr:'messages restants',rch:'Recharger',pm:'Virement • CMI • CashPlus',tm:'SMS ce mois',dr:'Taux de livraison',tod:'Aujourd\'hui',ms:'Dépensé ce mois',wa:'Activité cette semaine',mpd:'Messages par jour',bn:'Par opérateur',tm2:'Ce mois',rm:'Messages récents',l10:'10 derniers envois',sa:'Voir tous',sst:'Envoyer un SMS',ssub:'Envoi manuel — utilisez l\'API pour les envois automatiques',rec:'Destinataire',ph:'Format: +212XXXXXXXXX',sid:'Identifiant expéditeur',sh:'Max 11 caractères',mt:'Type',tr:'Transactionnel (OTP, confirmation)',pr:'Promotionnel',msg:'Message',mc:'Max 160 caractères',ec:'Coût estimé:',cl:'Effacer',sn:'Envoyer →',tpl:'Modèles rapides',t1:'OTP',t1s:'Code vérification',t2:'Livraison',t2s:'Notification colis',t3:'RDV',t3s:'Rappel rendez-vous',am:'Tous les messages',as:'Tous les statuts',dlv:'Livré',snt:'Envoyé',fld:'Échoué',at:'Analytiques détaillées',loa:'Chargement...',akm:'Gestion clé API',aks:'Authentification pour Nook SMS API',yak:'Votre clé API',rv:'👁 Afficher',cp:'Copier',akw:'Ne partagez jamais votre clé API.',rk:'Régénérer',qu:'Utilisation rapide',rmt:'💳 Recharger les crédits',rms:'Contactez-nous pour recharger',bd:'Virement bancaire:',ben:'Bénéficiaire:',bnk:'Banque:',tn:'Objet: votre email + montant',cls:'Fermer',eml:'Envoyer email →',rotit:'Régénérer la clé?',rotw:'Votre ancienne clé sera invalide immédiatement.',can:'Annuler',cfr:'Confirmer',ld:'Chargement...',tto:'Destinataire',tmsg:'Message',tnet:'Réseau',tst:'Statut',tco:'Coût',tdt:'Date',nm:'Aucun message',sdl:'Livré ✓',ssnt:'Envoyé',sfld:'Échoué ✗',spnd:'En attente',ok:'SMS envoyé',fail:'Échec envoi',cped:'Copié ✓',krot:'Nouvelle clé sauvegardée!',inv:'Numéro invalide'},
+  en:{main:'Main',ov:'Overview',snd:'Send SMS',msgs:'Messages',ana:'Analytics',stats:'Statistics',acc:'Account',key:'API Key',docs:'Documentation',ref:'↻ Refresh',ss:'Send SMS',ca:'Available Credits',mr:'messages remaining',rch:'Add Credits',pm:'Wire • CMI • CashPlus',tm:'SMS this month',dr:'Delivery rate',tod:'Today',ms:'Spent this month',wa:'This week activity',mpd:'Messages per day',bn:'By network',tm2:'This month',rm:'Recent messages',l10:'Last 10 sends',sa:'See all',sst:'Send an SMS',ssub:'Manual send — use the API for automated sends',rec:'Recipient',ph:'Format: +212XXXXXXXXX',sid:'Sender ID',sh:'Max 11 characters',mt:'Type',tr:'Transactional (OTP, confirmation)',pr:'Promotional',msg:'Message',mc:'Max 160 characters',ec:'Estimated cost:',cl:'Clear',sn:'Send →',tpl:'Quick templates',t1:'OTP',t1s:'Verification code',t2:'Delivery',t2s:'Package notification',t3:'Appointment',t3s:'Reminder',am:'All messages',as:'All statuses',dlv:'Delivered',snt:'Sent',fld:'Failed',at:'Detailed Analytics',loa:'Loading...',akm:'API Key Management',aks:'Authentication for Nook SMS API',yak:'Your API Key',rv:'👁 Show',cp:'Copy',akw:'Never share your API key.',rk:'Regenerate',qu:'Quick use',rmt:'💳 Add Credits',rms:'Contact us to add credits',bd:'Bank transfer:',ben:'Beneficiary:',bnk:'Bank:',tn:'Reference: your email + amount',cls:'Close',eml:'Send email →',rotit:'Regenerate key?',rotw:'Your old key will be immediately invalid.',can:'Cancel',cfr:'Confirm',ld:'Loading...',tto:'Recipient',tmsg:'Message',tnet:'Network',tst:'Status',tco:'Cost',tdt:'Date',nm:'No messages yet',sdl:'Delivered ✓',ssnt:'Sent',sfld:'Failed ✗',spnd:'Pending',ok:'SMS sent',fail:'Send failed',cped:'Copied ✓',krot:'New key saved!',inv:'Invalid number'}
+};
+let L=localStorage.getItem('nkl')||'fr';
+function t(k){return TR[L][k]||TR.fr[k]||k;}
+function setL(l){
+  L=l;localStorage.setItem('nkl',l);
+  document.querySelectorAll('.lb').forEach(b=>b.classList.toggle('on',b.textContent===l.toUpperCase()));
+  const ids=['main','ov','snd','msgs','ana','stats','acc','key','docs','ref','ss','ca','mr','rch','pm','tm','dr','tod','ms','wa','mpd','bn','tm2','rm','l10','sa','sst','ssub','rec','ph','sid','sh','mt','tr','pr','msg','mc','ec','cl','sn','tpl','t1','t1s','t2','t2s','t3','t3s','am','as','dlv','snt','fld','at','loa','akm','aks','yak','rv','cp','akw','rk','qu','rmt','rms','bd','ben','bnk','tn','cls','eml','rotit','rotw','can','cfr','ld','tto','tmsg','tnet','tst','tco','tdt','tto2','tmsg2','tnet2','tst2','tco2','tdt2'];
+  ids.forEach(id=>{const el=document.getElementById('tl-'+id);if(el)el.textContent=t(id);});
+  document.documentElement.lang=l;
 }
-function hideKey(){
-  document.getElementById('api-key-text').textContent = 'nk_live_••••••••••••••••••••••••••••'
-  document.getElementById('reveal-btn').textContent = '👁 Afficher'
-  document.getElementById('reveal-btn').onclick = revealKey
+const pages=['ov','snd','msgs','ana','key'];
+function pg(n){
+  pages.forEach(p=>{
+    document.getElementById('p-'+p).style.display=p===n?'':\'none\';
+    document.querySelectorAll('.nl').forEach(l=>{if(l.getAttribute('onclick')?.includes(''\"\'+n+'\"')){l.classList.add('on');}else l.classList.remove('on');});
+  });
+  document.getElementById('ptitle').textContent=t(n=== 'ov' ?'ov':n);
+  if(n==='msgs')loadMsgs();
+  if(n==='ana')loadAna();
+  if(n==='key'){document.getElementById('akdisp').textContent='nk_live_••••••••••••••••••••••••••••••••';revealed=false;}
 }
-function copyKey(){
-  navigator.clipboard.writeText(API_KEY)
-  const btn = event.target; btn.textContent = 'Copié ✓'
-  setTimeout(()=>btn.textContent='Copier',2000)
+async function apicall(path,opts={}){
+  const r=await fetch(API+path,{...opts,headers:{'Authorization':'Bearer '+AKEY,'Content-Type':'application/json',...(opts.headers||{})}});
+  const d=await r.json();
+  if(!r.ok)throw Object.assign(new Error(d.error||'API error'),{status:r.status});
+  return d;
 }
-
-function showSection(s){
-  document.getElementById('send-section').style.display = s==='send' ? 'block' : 'none'
+function toast(msg,type='info'){
+  const el=document.createElement('div');
+  el.className='ti t'+(type==='success'?'s':type==='error'?'e':'i2');
+  el.innerHTML='<span>'+(type==='success'?'✓':type==='error'?'✗':'ℹ')+'</span><span>'+msg+'</span>';
+  document.getElementById('toast').appendChild(el);
+  setTimeout(()=>el.remove(),4000);
 }
-
-document.getElementById('send-msg').addEventListener('input', function(){
-  document.getElementById('char-count').textContent = this.value.length + '/160 caractères'
-})
-
-async function sendSMS(){
-  const to = document.getElementById('send-to').value
-  const msg = document.getElementById('send-msg').value
-  const result = document.getElementById('send-result')
-  if(!to||!msg){result.style.display='block';result.innerHTML='<span style="color:var(--red)">Remplissez tous les champs</span>';return}
+async function loadOv(){
   try{
-    const r = await fetch(`${API_BASE}/v1/sms/send`,{
-      method:'POST',
-      headers:{'Content-Type':'application/json','Authorization':'Bearer '+API_KEY},
-      body:JSON.stringify({to,message:msg})
-    })
-    const d = await r.json()
-    result.style.display='block'
-    if(d.success){
-      result.innerHTML=`<span style="color:var(--green)">✓ SMS envoyé — ID: ${d.message_id} — Coût: ${d.cost} DH</span>`
-    }else{
-      result.innerHTML=`<span style="color:var(--red)">✗ Erreur: ${d.error||'Échec d\'envoi'}</span>`
-    }
-  }catch(e){
-    result.style.display='block'
-    result.innerHTML='<span style="color:var(--red)">✗ Impossible de contacter le serveur</span>'
-  }
+    const[me,ana]=await Promise.all([apicall('/v1/clients/me'),apicall('/v1/analytics/overview')]);
+    document.getElementById('uname').textContent=me.name||'—';
+    document.getElementById('uplan').textContent='Plan '+(me.plan||'—');
+    document.getElementById('uav').textContent=(me.name||'?')[0].toUpperCase();
+    document.getElementById('pchip').textContent=(me.plan||'—').toUpperCase();
+    const cr=parseFloat(me.credits?.amount||0);
+    document.getElementById('cval').textContent=cr.toFixed(2);
+    document.getElementById('cbar').style.width=Math.min((cr/500)*100,100)+'%';
+    document.getElementById('cmsg').textContent='≈ '+Math.floor(cr/0.2).toLocaleString()+' '+t('mr');
+    document.getElementById('nav-cnt').textContent=(ana.all_time?.total_messages||0).toLocaleString();
+    document.getElementById('sm').textContent=(ana.this_month?.sent||0).toLocaleString();
+    document.getElementById('sr').textContent=ana.all_time?.delivery_rate||'0%';
+    document.getElementById('sd').textContent=(ana.today?.sent||0).toLocaleString();
+    document.getElementById('sc').textContent=(ana.this_month?.cost_dh||0)+' DH';
+    document.getElementById('ksnip').textContent=AKEY.substring(0,18)+'...';
+    const nets=ana.by_network||{};
+    const total=Object.values(nets).reduce((s,n)=>s+(n.sent||0),0);
+    const clrs={maroc_telecom:'#f97316',orange:'#3b82f6',inwi:'#10b981',unknown:'#6b7694'};
+    const nms={maroc_telecom:'Maroc Telecom',orange:'Orange',inwi:'Inwi',unknown:'Inconnu'};
+    const nl=document.getElementById('netlist');nl.innerHTML='';
+    Object.entries(nets).forEach(([nm,d])=>{
+      const p=total>0?Math.round((d.sent/total)*100):0;
+      nl.innerHTML+='<div class="nr"><div class="nd" style="background:'+(clrs[nm]||'#6b7694')+'"></div><div class="nn">'+(nms[nm]||nm)+'</div><div class="nt"><div class="nf" style="width:'+p+'%;background:'+(clrs[nm]||'#6b7694')+'"></div></div><div class="np">'+p+'%</div></div>';
+    });
+    if(!Object.keys(nets).length)nl.innerHTML='<div style="color:var(--t2);font-size:13px">Aucune donnée</div>';
+    buildChart();loadRecent();
+  }catch(e){if(e.status===401){location.href='login.html';}else toast('Erreur: '+e.message,'error');}
 }
-
-function loadMessages(){
-  // In production: fetch from /v1/sms/messages
-  alert('Actualisation des messages...\nConnectez à GET /v1/sms/messages avec votre clé API')
+async function buildChart(){
+  try{
+    const d=await apicall('/v1/analytics/usage?period=7d');
+    const chart=document.getElementById('barchart');chart.innerHTML='';
+    const days=d.data||[];const mx=Math.max(...days.map(x=>x.sent||0),1);
+    const dn=L==='fr'?['Dim','Lun','Mar','Mer','Jeu','Ven','Sam']:['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+    const tod=new Date().toISOString().split('T')[0];
+    days.forEach(d=>{
+      const p=((d.sent||0)/mx*100);const dt=new Date(d.date);const isT=d.date===tod;
+      chart.innerHTML+='<div class="bc"><div class="bi'+(isT?' td':'')+'" style="height:'+Math.max(p,3)+'%"><div class="btt">'+(d.sent||0)+' SMS</div></div><div class="bd2">'+dn[dt.getDay()]+'</div></div>';
+    });
+  }catch(e){}
 }
+async function loadRecent(){
+  try{
+    const d=await apicall('/v1/sms/messages?limit=10&page=1');
+    renderMsgs(d.messages||[],'rtbody',false);
+  }catch(e){document.getElementById('rtbody').innerHTML='<tr><td colspan="6"><div class="empty">'+ t('nm')+'</div></td></tr>';}
+}
+async function loadMsgs(){
+  const st=document.getElementById('fst')?.value||''
+  const tb=document.getElementById('mtbody');
+  if(!tb)return;
+  tb.innerHTML='<tr><td colspan="7"><div class="empty"><div class="sp"></div></div></td></tr>';
+  try{
+    const p=new URLSearchParams({page:curpg,limit:25});if(st)p.set('status',st);
+    const d=await apicall('/v1/sms/messages?'+p);
+    const pg=d.pagination||{};
+    renderMsgs(d.messages||[],'mtbody',true);
+    document.getElementById('mcnt-lbl').textContent=(pg.total||0)+' messages';
+    document.getElementById('pinfo').textContent='Page '+(pg.page||1)+' / '+(pg.pages||1);
+    document.getElementById('pp').disabled=curpg<=1;
+    document.getElementById('np').disabled=curpg>=(pg.pages||1);
+  }catch(e){tb.innerHTML='<tr><td colspan="7"><div class="empty">Erreur: '+e.message+'</div></td></tr>';}
+}
+function chpg(d){curpg=Math.max(1,curpg+d);loadMsgs();}
+function renderMsgs(msgs,id,showId){
+  const tb=document.getElementById(id);
+  if(!msgs.length){tb.innerHTML='<tr><td colspan="'+(showId?7:6)+'"><div class="empty">'+t('nm')+'</div></td></tr>';return;}
+  const sm={delivered:'<span class="pill pg">✓ '+t('sdl')+'</span>',sent:'<span class="pill pb">'+t('ssnt')+'</span>',failed:'<span class="pill pr">✗ '+t('sfld')+'</span>',pending:'<span class="pill py">'+t('spnd')+'</span>'};
+  tb.innerHTML=msgs.map(m=>'<tr>'+(showId?'<td class="mono" style="color:var(--t2)">'+(m.id||'—').substring(0,14)+'...</td>':\'')+'<td class="mono">'+(m.to_number||m.to||'—')+'</td><td><div style="max-width:170px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--t2)">'+(m.message||'—')+'</div></td><td><span style="font-size:11px;background:rgba(255,255,255,.04);padding:2px 6px;border-radius:4px;font-family:var(--mono)">'+(m.network||'—')+'</span></td><td>'+(sm[m.status]||'<span class="pill pgr">'+m.status+'</span>')+'</td><td class="mono" style="color:var(--t2)">'+(m.cost||0)+' DH</td><td style="color:var(--t2);font-size:12px">'+(m.created_at?new Date(m.created_at).toLocaleString(L==='fr'?'fr-MA':'en-US',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}):'')+'</td></tr>').join('');
+}
+async function loadAna(){
+  const b=document.getElementById('anabody');
+  try{
+    const[ov,us,ti]=await Promise.all([apicall('/v1/analytics/overview'),apicall('/v1/analytics/usage?period=30d'),apicall('/v1/analytics/best-times')]);
+    const a=ov.all_time||{},m=ov.this_month||{};
+    b.innerHTML='<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:18px"><div style="text-align:center;padding:14px;background:rgba(0,0,0,.2);border-radius:9px"><div style="font-size:26px;font-weight:800">'+( a.total_messages||0)+'</div><div style="font-size:12px;color:var(--t2)">Total SMS</div></div><div style="text-align:center;padding:14px;background:rgba(0,0,0,.2);border-radius:9px"><div style="font-size:26px;font-weight:800;color:var(--green)">'+( a.delivery_rate||'0%')+'</div><div style="font-size:12px;color:var(--t2)">Taux livraison</div></div><div style="text-align:center;padding:14px;background:rgba(0,0,0,.2);border-radius:9px"><div style="font-size:26px;font-weight:800;color:var(--a2)">'+(m.cost_dh||0)+' DH</div><div style="font-size:12px;color:var(--t2)">Ce mois</div></div></div><div style="font-weight:600;margin-bottom:9px">30 jours</div><div style="display:flex;align-items:flex-end;gap:2px;height:70px;margin-bottom:14px">'+(us.data||[]).map(d=>{const mx=Math.max(...(us.data||[]).map(x=>x.sent||0),1);const h=Math.max(((d.sent||0)/mx*100),2);return'<div style="flex:1;height:'+h+'%;background:'+(d.sent>0?'var(--accent)':'rgba(255,255,255,.04)')+';border-radius:2px 2px 0 0;min-height:2px" title="'+d.date+': '+d.sent+' SMS"></div>';}).join('')+'</div><div style="font-weight:600;margin-bottom:9px">Meilleurs horaires</div><div style="display:flex;flex-wrap:wrap;gap:5px">'+(ti.best_hours||[]).map(h=>'<div style="background:var(--gdim);border:1px solid rgba(16,185,129,.15);border-radius:7px;padding:7px 12px;text-align:center"><div style="font-family:var(--mono);font-weight:700;color:var(--green)">'+ h.hour+'</div><div style="font-size:11px;color:var(--t2)">'+h.delivery_rate+'</div></div>').join('')||'<span style="color:var(--t2);font-size:13px">Pas assez de données</span>')+'</div>';
+  }catch(e){b.innerHTML='<div style="color:var(--red);text-align:center;padding:28px">Erreur: '+e.message+'</div>';}
+}
+function vphn(el){const ok=/^(\\+212|212|0)[5-7]\\d{8}$/.test(el.value.replace(/\\s/g,''));el.style.borderColor=el.value?(ok?'rgba(16,185,129,.4)':'rgba(239,68,68,.4)'):'';}
+function ucc(el){const n=el.value.length;document.getElementById('ccount').textContent=n+'/160';}
+function clr(){['s-to','s-msg','s-from'].forEach(id=>{const e=document.getElementById(id);if(e)e.value=''});document.getElementById('sres').style.display='none';document.getElementById('ccount').textContent='0/160';}
+const TPLS={otp:'Votre code: {CODE}. Valide 10 min. Ne partagez pas ce code.',dlv:'Votre commande #{REF} est livrée. Merci de votre confiance!',rdv:'Rappel: RDV le {DATE} à {TIME}. Pour annuler: {TEL}'};
+function tpl(tp){pg('snd');const e=document.getElementById('s-msg');if(e){e.value=TPLS[tp]||'';}document.getElementById('ccount').textContent=(TPLS[tp]||'').length+'/160';}
+async function doSend(){
+  const to=document.getElementById('s-to').value.trim(),msg=document.getElementById('s-msg').value.trim(),from=document.getElementById('s-from').value.trim(),type=document.getElementById('s-type').value;
+  const re=document.getElementById('sres'),btn=document.getElementById('sbtn');
+  if(!to){toast(t('inv'),'error');return;}
+  if(!msg){toast('Message vide','error');return;}
+  btn.disabled=true;btn.innerHTML='<div class="sp"></div>';re.style.display='none';
+  try{
+    const bd={to,message:msg,message_type:type};if(from)bd.sender_id=from;
+    const d=await apicall('/v1/sms/send',{method:'POST',body:JSON.stringify(bd)});
+    re.className='rm rs';re.innerHTML='✓ '+t('ok')+' — ID: <span class="mono">'+d.message_id+'</span> — '+d.cost+' DH';re.style.display='flex';
+    toast(t('ok'),'success');loadOv();
+  }catch(e){re.className='rm re';re.innerHTML='✗ '+t('fail')+': '+e.message;re.style.display='flex';toast(t('fail')+': '+e.message,'error');}
+  finally{btn.disabled=false;btn.innerHTML='<span>'+t('sn')+'</span>';}
+}
+function togRev(){
+  revealed=!revealed;
+  document.getElementById('akdisp').textContent=revealed?AKEY:'nk_live_••••••••••••••••••••••••••••••••';
+  document.getElementById('tl-rv').textContent=revealed?t('cp'):t('rv');
+}
+function cpKey(){navigator.clipboard.writeText(AKEY).then(()=>toast(t('cped'),'success'));}
+async function doRot(){
+  document.getElementById('rotm').classList.remove('op');
+  try{const d=await apicall('/v1/clients/rotate-key',{method:'POST'});AKEY=d.new_api_key;localStorage.setItem('nk',AKEY);toast(t('krot'),'success');}
+  catch(e){toast('Erreur: '+e.message,'error');}
+}
+function logout(){localStorage.removeItem('nk');location.href='login.html';}
+setL(L);loadOv();
 </script>
 </body>
 </html>

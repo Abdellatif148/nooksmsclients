@@ -4,659 +4,692 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Nook SMS — Documentation</title>
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="config.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --navy:#0a0f1e;--navy2:#0f1629;--card:#141d35;
-  --border:#1e2d50;--accent:#e8622a;--accent2:#ff7a45;
-  --text:#e8eaf0;--muted:#6b7694;--muted2:#4a5578;
-  --green:#22c55e;--blue:#3b82f6;--purple:#a855f7;
-  --font:'Sora',sans-serif;--mono:'JetBrains Mono',monospace;
+  --bg:#07090f;--bg2:#0c1018;--card:#111520;--card2:#161c2a;
+  --border:#1a2236;--b2:#202840;
+  --accent:#f97316;--a2:#fb923c;--adim:rgba(249,115,22,0.1);
+  --text:#f0f2f8;--t2:#8a94b0;--t3:#4a5470;
+  --green:#10b981;--gdim:rgba(16,185,129,0.1);
+  --red:#ef4444;--blue:#3b82f6;--bdim:rgba(59,130,246,0.1);
+  --purple:#a855f7;--pdim:rgba(168,85,247,0.1);
+  --yellow:#f59e0b;
+  --font:"Plus Jakarta Sans",sans-serif;--mono:"JetBrains Mono",monospace;
 }
-body{font-family:var(--font);background:var(--navy);color:var(--text);display:flex}
-body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(232,98,42,0.015) 1px,transparent 1px),linear-gradient(90deg,rgba(232,98,42,0.015) 1px,transparent 1px);background-size:60px 60px;pointer-events:none}
-
-/* SIDEBAR TOC */
-.toc{
-  width:260px;min-height:100vh;
-  background:var(--navy2);border-right:1px solid var(--border);
-  position:fixed;left:0;top:0;overflow-y:auto;
-  display:flex;flex-direction:column;
-}
-.toc-logo{padding:20px 18px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border)}
-.logo-mark{width:32px;height:32px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:7px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;color:white}
-.logo-text{font-size:16px;font-weight:700}
-.toc-nav{flex:1;padding:16px 12px}
-.toc-section{margin-bottom:20px}
-.toc-label{font-size:10px;font-weight:600;color:var(--muted2);text-transform:uppercase;letter-spacing:0.7px;padding:0 8px;margin-bottom:6px}
-.toc-item{display:block;padding:7px 10px;border-radius:7px;color:var(--muted);font-size:13px;text-decoration:none;transition:all .15s;cursor:pointer}
-.toc-item:hover{background:rgba(255,255,255,0.04);color:var(--text)}
-.toc-item.active{background:rgba(232,98,42,0.1);color:var(--accent2)}
-.toc-item.method{
-  display:flex;align-items:center;gap:8px;
-  font-family:var(--mono);font-size:12px;padding:6px 10px;
-}
-.method-badge{
-  font-size:10px;font-weight:700;padding:2px 6px;border-radius:4px;min-width:36px;text-align:center;
-}
-.get{background:rgba(34,197,94,0.12);color:var(--green)}
-.post{background:rgba(232,98,42,0.12);color:var(--accent2)}
-.patch{background:rgba(59,130,246,0.12);color:var(--blue)}
-
-/* MAIN */
-.main{margin-left:260px;flex:1;max-width:900px;padding:48px 48px;position:relative;z-index:1}
-
-/* HEADER */
-.doc-header{margin-bottom:48px}
-.doc-badge{
-  display:inline-flex;align-items:center;gap:6px;
-  background:rgba(34,197,94,0.1);color:var(--green);
-  font-size:12px;font-weight:600;
-  padding:4px 12px;border-radius:20px;
-  border:1px solid rgba(34,197,94,0.2);
-  margin-bottom:16px;
-}
-.version-badge{background:rgba(232,98,42,0.1);color:var(--accent2);border-color:rgba(232,98,42,0.2)}
-.doc-title{font-size:38px;font-weight:700;letter-spacing:-1px;line-height:1.15;margin-bottom:12px}
-.doc-subtitle{font-size:16px;color:var(--muted);line-height:1.6;max-width:600px}
-
-/* SECTIONS */
-h2{font-size:22px;font-weight:700;letter-spacing:-0.3px;margin-bottom:8px;margin-top:48px}
-h3{font-size:16px;font-weight:600;margin-bottom:8px;margin-top:28px;color:var(--text)}
-p{font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:12px}
-.divider{height:1px;background:var(--border);margin:40px 0}
-
-/* PRICING */
-.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:24px 0}
-.pricing-card{
-  background:var(--card);border:1px solid var(--border);
-  border-radius:14px;padding:24px;
-  transition:all .2s;position:relative;overflow:hidden;
-}
-.pricing-card.popular{border-color:rgba(232,98,42,0.4)}
-.popular-badge{
-  position:absolute;top:12px;right:12px;
-  background:linear-gradient(135deg,var(--accent),var(--accent2));
-  color:white;font-size:10px;font-weight:700;
-  padding:3px 8px;border-radius:4px;
-  text-transform:uppercase;letter-spacing:0.5px;
-}
-.plan-name{font-size:13px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px}
-.plan-price{font-size:30px;font-weight:700;letter-spacing:-0.5px;line-height:1}
-.plan-price sup{font-size:14px;font-weight:500;color:var(--muted)}
-.plan-price span{font-size:14px;font-weight:400;color:var(--muted)}
-.plan-desc{font-size:12px;color:var(--muted);margin-top:6px;margin-bottom:16px}
-.plan-features{list-style:none;display:flex;flex-direction:column;gap:8px}
-.plan-features li{font-size:13px;display:flex;align-items:center;gap:8px}
-.plan-features li::before{content:'✓';color:var(--green);font-weight:700;font-size:12px;flex-shrink:0}
-
-/* SMS PRICE TABLE */
-.price-table{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin:16px 0}
-.price-table table{width:100%;border-collapse:collapse}
-.price-table th{padding:11px 18px;font-size:11px;font-weight:600;color:var(--muted2);text-transform:uppercase;letter-spacing:0.4px;text-align:left;background:rgba(0,0,0,0.2);border-bottom:1px solid var(--border)}
-.price-table td{padding:12px 18px;font-size:13px;border-bottom:1px solid rgba(30,45,80,0.4)}
-.price-table tr:last-child td{border:none}
-
-/* CODE BLOCKS */
-.endpoint{
-  display:flex;align-items:center;gap:10px;
-  background:rgba(0,0,0,0.4);
-  border:1px solid var(--border);border-radius:10px;
-  padding:12px 16px;margin:14px 0;
-  font-family:var(--mono);font-size:13px;
-}
-.endpoint-method{
-  font-size:11px;font-weight:700;padding:3px 8px;border-radius:5px;
-  white-space:nowrap;
-}
-.endpoint-path{color:var(--text)}
-.endpoint-desc{margin-left:auto;font-size:11px;color:var(--muted);font-family:var(--font)}
-
-.code-block{
-  background:#060c18;
-  border:1px solid var(--border);
-  border-radius:12px;
-  overflow:hidden;
-  margin:16px 0;
-}
-.code-tabs{
-  display:flex;gap:0;
-  border-bottom:1px solid var(--border);
-  background:rgba(0,0,0,0.3);
-}
-.code-tab{
-  padding:9px 16px;font-size:12px;font-weight:500;
-  color:var(--muted);cursor:pointer;border:none;background:transparent;
-  font-family:var(--font);transition:all .15s;
-  border-bottom:2px solid transparent;margin-bottom:-1px;
-}
-.code-tab.active{color:var(--accent2);border-bottom-color:var(--accent2)}
-.code-content{display:none;padding:20px}
-.code-content.active{display:block}
-pre{font-family:var(--mono);font-size:12px;line-height:1.7;white-space:pre;overflow-x:auto;color:var(--text)}
-.c-keyword{color:#c678dd}
-.c-string{color:#98c379}
-.c-comment{color:#5c6370;font-style:italic}
-.c-func{color:#61afef}
-.c-key{color:#e06c75}
-.c-val{color:#d19a66}
-.c-op{color:#56b6c2}
-.copy-code{
-  float:right;margin:-4px -4px 8px 0;
-  background:rgba(255,255,255,0.05);border:1px solid var(--border);
-  border-radius:6px;padding:4px 10px;font-size:11px;
-  color:var(--muted);cursor:pointer;font-family:var(--font);
-}
-.copy-code:hover{color:var(--text)}
-
-/* PARAMS TABLE */
-.params-table{background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin:14px 0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);background:var(--bg);color:var(--text);display:flex;font-size:14px;line-height:1.6}
+.sidebar{width:256px;min-height:100vh;background:var(--bg2);border-right:1px solid var(--border);position:sticky;top:0;height:100vh;overflow-y:auto;display:flex;flex-direction:column;flex-shrink:0}
+.s-top{padding:18px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:9px}
+.logo{width:32px;height:32px;background:linear-gradient(135deg,var(--accent),var(--a2));border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;color:#fff}
+.logo-n{font-size:15px;font-weight:800}
+.ver{margin-left:auto;font-size:10px;font-weight:700;background:var(--adim);color:var(--a2);padding:2px 7px;border-radius:20px;border:1px solid rgba(249,115,22,.2)}
+.nav{flex:1;padding:12px 10px}
+.ng{margin-bottom:18px}
+.ngl{font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.7px;padding:0 8px;margin-bottom:5px}
+.nl{display:flex;align-items:center;gap:8px;padding:7px 9px;border-radius:8px;color:var(--t2);font-size:13px;text-decoration:none;transition:all .15s;cursor:pointer;border:none;background:transparent;width:100%;text-align:left;margin-bottom:1px}
+.nl:hover{background:rgba(255,255,255,.03);color:var(--text)}
+.nl.on{background:var(--adim);color:var(--a2)}
+.method-tag{font-size:9px;font-weight:700;padding:2px 5px;border-radius:4px;min-width:32px;text-align:center;font-family:var(--mono)}
+.get{background:var(--gdim);color:var(--green)}
+.post{background:var(--adim);color:var(--a2)}
+.main{flex:1;max-width:860px;padding:44px 48px}
+h1{font-size:36px;font-weight:800;letter-spacing:-1px;line-height:1.15;margin-bottom:10px}
+h2{font-size:22px;font-weight:700;letter-spacing:-.3px;margin-top:52px;margin-bottom:8px}
+h3{font-size:16px;font-weight:700;margin-top:28px;margin-bottom:7px}
+p{color:var(--t2);font-size:14px;line-height:1.75;margin-bottom:12px}
+.hero-badges{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+.badge{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:600;padding:4px 11px;border-radius:20px;border:1px solid}
+.badge-green{background:var(--gdim);color:var(--green);border-color:rgba(16,185,129,.2)}
+.badge-orange{background:var(--adim);color:var(--a2);border-color:rgba(249,115,22,.2)}
+.badge-blue{background:var(--bdim);color:var(--blue);border-color:rgba(59,130,246,.2)}
+.badge-purple{background:var(--pdim);color:var(--purple);border-color:rgba(168,85,247,.2)}
+.base-url{display:inline-flex;align-items:center;gap:10px;background:rgba(0,0,0,.4);border:1px solid var(--border);border-radius:9px;padding:11px 16px;font-family:var(--mono);font-size:13px;margin-bottom:28px;margin-top:8px}
+.base-label{color:var(--t2)}
+.base-val{color:var(--a2)}
+hr{border:none;border-top:1px solid var(--border);margin:40px 0}
+.endpoint{display:flex;align-items:center;gap:10px;background:rgba(0,0,0,.35);border:1px solid var(--border);border-radius:9px;padding:11px 15px;margin:13px 0;font-family:var(--mono);font-size:13px}
+.ep-method{font-size:10px;font-weight:700;padding:2px 7px;border-radius:5px;white-space:nowrap;font-family:var(--mono)}
+.ep-path{color:var(--text)}
+.ep-desc{margin-left:auto;font-size:12px;color:var(--t2);font-family:var(--font);white-space:nowrap}
+.code-block{background:#040710;border:1px solid var(--border);border-radius:11px;overflow:hidden;margin:14px 0}
+.code-tabs{display:flex;border-bottom:1px solid var(--border);background:rgba(0,0,0,.2)}
+.code-tab{padding:8px 15px;font-size:12px;font-weight:500;color:var(--t2);cursor:pointer;border:none;background:transparent;font-family:var(--font);transition:all .15s;border-bottom:2px solid transparent;margin-bottom:-1px}
+.code-tab.on{color:var(--a2);border-bottom-color:var(--accent)}
+.code-pane{display:none;padding:18px 20px;position:relative}
+.code-pane.on{display:block}
+pre{font-family:var(--mono);font-size:12px;line-height:1.75;white-space:pre;overflow-x:auto;color:var(--text)}
+.copy-btn{position:absolute;top:10px;right:12px;background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:6px;padding:3px 9px;font-size:11px;color:var(--t2);cursor:pointer;font-family:var(--font);transition:all .15s}
+.copy-btn:hover{color:var(--text)}
+.ck{color:#c678dd}.cs{color:#98c379}.cc{color:#5c6370;font-style:italic}.cf{color:#61afef}.cke{color:#e06c75}.cv{color:#d19a66}.co{color:#56b6c2}
+.params-table{background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin:13px 0}
 .params-table table{width:100%;border-collapse:collapse}
-.params-table th{padding:10px 16px;font-size:10px;font-weight:600;color:var(--muted2);text-transform:uppercase;letter-spacing:0.4px;background:rgba(0,0,0,0.2);border-bottom:1px solid var(--border)}
-.params-table td{padding:11px 16px;font-size:12px;border-bottom:1px solid rgba(30,45,80,0.4);vertical-align:top}
+.params-table th{padding:9px 15px;font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.4px;background:rgba(0,0,0,.2);border-bottom:1px solid var(--border);text-align:left}
+.params-table td{padding:10px 15px;font-size:12px;border-bottom:1px solid rgba(26,34,54,.4);vertical-align:top}
 .params-table tr:last-child td{border:none}
-.param-name{font-family:var(--mono);color:var(--accent2)}
-.param-type{font-family:var(--mono);color:var(--blue);font-size:11px}
-.required{color:var(--accent2);font-size:10px;background:rgba(232,98,42,0.1);padding:2px 6px;border-radius:4px;font-weight:600}
-.optional-tag{color:var(--muted);font-size:10px;background:rgba(107,118,148,0.1);padding:2px 6px;border-radius:4px}
-
-/* RESPONSE EXAMPLE */
-.response-block{
-  background:#060c18;border:1px solid rgba(34,197,94,0.2);
-  border-left:3px solid var(--green);
-  border-radius:10px;padding:18px 20px;margin:12px 0;
-}
-.response-block pre{color:var(--text)}
-.error-block{
-  border-color:rgba(239,68,68,0.2);border-left-color:var(--red);
-}
-
-/* QUICKSTART STEPS */
-.steps{counter-reset:step;margin:20px 0}
-.step{
-  display:flex;gap:16px;margin-bottom:24px;
-  position:relative;
-}
-.step-num{
-  width:28px;height:28px;border-radius:50%;
-  background:linear-gradient(135deg,var(--accent),var(--accent2));
-  display:flex;align-items:center;justify-content:center;
-  font-size:12px;font-weight:700;color:white;flex-shrink:0;margin-top:2px;
-}
-.step-body h4{font-size:14px;font-weight:600;margin-bottom:6px}
-.step-body p{font-size:13px;color:var(--muted);margin:0}
-
-/* ALERT BOX */
-.info-box{
-  background:rgba(59,130,246,0.06);border:1px solid rgba(59,130,246,0.15);
-  border-radius:10px;padding:14px 16px;
-  font-size:13px;color:rgba(147,197,253,0.9);
-  margin:14px 0;display:flex;gap:10px;align-items:flex-start;
-}
-.warn-box{
-  background:rgba(245,158,11,0.06);border-color:rgba(245,158,11,0.15);color:rgba(253,211,126,0.9);
-}
+.pname{font-family:var(--mono);color:var(--a2)}
+.ptype{font-family:var(--mono);color:var(--blue);font-size:11px}
+.preq{background:var(--adim);color:var(--a2);font-size:10px;font-weight:700;padding:2px 6px;border-radius:4px}
+.popt{background:rgba(255,255,255,.05);color:var(--t2);font-size:10px;padding:2px 6px;border-radius:4px}
+.res-block{background:#040710;border:1px solid var(--border);border-left:3px solid var(--green);border-radius:10px;padding:16px 18px;margin:12px 0}
+.err-block{border-left-color:var(--red)}
+.info-box{display:flex;gap:9px;align-items:flex-start;background:rgba(59,130,246,.06);border:1px solid rgba(59,130,246,.15);border-radius:9px;padding:12px 15px;font-size:13px;color:rgba(147,197,253,.9);margin:13px 0}
+.warn-box{background:rgba(245,158,11,.05);border-color:rgba(245,158,11,.14);color:rgba(253,211,126,.9)}
+.sandbox-card{background:linear-gradient(135deg,rgba(168,85,247,.08),rgba(168,85,247,.02));border:1px solid rgba(168,85,247,.2);border-radius:14px;padding:24px;margin:18px 0}
+.sandbox-card h3{color:var(--purple);margin-top:0}
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:18px 0}
+.plan-card{background:var(--card);border:1px solid var(--border);border-radius:13px;padding:22px;transition:border-color .2s;position:relative;overflow:hidden}
+.plan-card:hover{border-color:var(--b2)}
+.plan-card.popular{border-color:rgba(249,115,22,.3)}
+.popular-tag{position:absolute;top:10px;right:10px;background:linear-gradient(135deg,var(--accent),var(--a2));color:#fff;font-size:9px;font-weight:700;padding:2px 8px;border-radius:4px;text-transform:uppercase;letter-spacing:.4px}
+.plan-name{font-size:11px;font-weight:700;color:var(--t2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+.plan-price{font-size:28px;font-weight:800;letter-spacing:-.5px;line-height:1}
+.plan-price sup{font-size:13px;font-weight:500;color:var(--t2)}
+.plan-price sub{font-size:13px;font-weight:400;color:var(--t2);vertical-align:baseline}
+.plan-desc{font-size:12px;color:var(--t2);margin:6px 0 14px}
+.plan-feat{list-style:none;display:flex;flex-direction:column;gap:7px}
+.plan-feat li{font-size:12px;display:flex;align-items:center;gap:7px}
+.plan-feat li::before{content:"✓";color:var(--green);font-weight:700;font-size:11px;flex-shrink:0}
+.price-table{background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin:13px 0}
+.price-table table{width:100%;border-collapse:collapse}
+.price-table th{padding:9px 16px;font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.4px;background:rgba(0,0,0,.2);border-bottom:1px solid var(--border);text-align:left}
+.price-table td{padding:11px 16px;font-size:13px;border-bottom:1px solid rgba(26,34,54,.4)}
+.price-table tr:last-child td{border:none}
+.step{display:flex;gap:14px;margin-bottom:22px}
+.step-n{width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--a2));display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;flex-shrink:0;margin-top:2px}
+.step-body h4{font-size:14px;font-weight:600;margin-bottom:4px}
+.step-body p{font-size:13px;margin:0}
+.morocco-card{background:var(--card2);border:1px solid var(--border);border-radius:13px;padding:20px;margin-bottom:14px}
+.morocco-card .title{font-size:15px;font-weight:700;margin-bottom:6px}
+.morocco-card .desc{font-size:13px;color:var(--t2);margin-bottom:12px}
+.error-table{background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin:13px 0}
+.error-table table{width:100%;border-collapse:collapse}
+.error-table th{padding:9px 15px;font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;background:rgba(0,0,0,.2);border-bottom:1px solid var(--border);text-align:left}
+.error-table td{padding:10px 15px;font-size:12px;border-bottom:1px solid rgba(26,34,54,.4)}
+.error-table tr:last-child td{border:none}
+.lt{position:fixed;top:14px;right:16px;display:flex;background:var(--card);border:1px solid var(--border);border-radius:8px;overflow:hidden;z-index:100}
+.lb{padding:5px 10px;font-size:12px;font-weight:600;border:none;background:transparent;color:var(--t2);cursor:pointer;font-family:var(--font);transition:all .15s}
+.lb.on{background:var(--adim);color:var(--a2)}
+@media(max-width:768px){.sidebar{display:none}.main{padding:24px 20px}.pricing-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 
-<!-- TOC SIDEBAR -->
-<aside class="toc">
-  <div class="toc-logo">
-    <div class="logo-mark">N</div>
-    <div>
-      <div class="logo-text">Nook SMS</div>
-    </div>
+<div class="lt"><button class="lb on" onclick="setL('fr')">FR</button><button class="lb" onclick="setL('en')">EN</button></div>
+
+<aside class="sidebar">
+  <div class="s-top">
+    <div class="logo">N</div>
+    <span class="logo-n">Nook SMS</span>
+    <span class="ver">v1.0</span>
   </div>
-  <nav class="toc-nav">
-    <div class="toc-section">
-      <div class="toc-label">Démarrage</div>
-      <a href="#intro" class="toc-item active">Introduction</a>
-      <a href="#quickstart" class="toc-item">Démarrage rapide</a>
-      <a href="#auth" class="toc-item">Authentification</a>
-      <a href="#pricing" class="toc-item">Tarifs</a>
+  <nav class="nav">
+    <div class="ng">
+      <div class="ngl">Démarrage</div>
+      <a href="#intro" class="nl on">Introduction</a>
+      <a href="#quickstart" class="nl">Démarrage rapide</a>
+      <a href="#auth" class="nl">Authentification</a>
+      <a href="#pricing" class="nl">Tarifs</a>
+      <a href="#sandbox" class="nl">🧪 Sandbox</a>
     </div>
-    <div class="toc-section">
-      <div class="toc-label">SMS</div>
-      <a href="#send" class="toc-item method"><span class="method-badge post">POST</span>/sms/send</a>
-      <a href="#bulk" class="toc-item method"><span class="method-badge post">POST</span>/sms/bulk</a>
-      <a href="#status" class="toc-item method"><span class="method-badge get">GET</span>/sms/status</a>
-      <a href="#messages" class="toc-item method"><span class="method-badge get">GET</span>/sms/messages</a>
+    <div class="ng">
+      <div class="ngl">SMS</div>
+      <a href="#send" class="nl"><span class="method-tag post">POST</span>/sms/send</a>
+      <a href="#bulk" class="nl"><span class="method-tag post">POST</span>/sms/bulk</a>
+      <a href="#status" class="nl"><span class="method-tag get">GET</span>/sms/status</a>
+      <a href="#messages" class="nl"><span class="method-tag get">GET</span>/sms/messages</a>
     </div>
-    <div class="toc-section">
-      <div class="toc-label">OTP</div>
-      <a href="#otp-send" class="toc-item method"><span class="method-badge post">POST</span>/otp/send</a>
-      <a href="#otp-verify" class="toc-item method"><span class="method-badge post">POST</span>/otp/verify</a>
+    <div class="ng">
+      <div class="ngl">OTP</div>
+      <a href="#otp-send" class="nl"><span class="method-tag post">POST</span>/otp/send</a>
+      <a href="#otp-verify" class="nl"><span class="method-tag post">POST</span>/otp/verify</a>
     </div>
-    <div class="toc-section">
-      <div class="toc-label">Compte</div>
-      <a href="#account" class="toc-item method"><span class="method-badge get">GET</span>/clients/me</a>
-      <a href="#analytics" class="toc-item method"><span class="method-badge get">GET</span>/analytics</a>
+    <div class="ng">
+      <div class="ngl">Compte</div>
+      <a href="#register" class="nl"><span class="method-tag post">POST</span>/clients/register</a>
+      <a href="#me" class="nl"><span class="method-tag get">GET</span>/clients/me</a>
+      <a href="#analytics" class="nl"><span class="method-tag get">GET</span>/analytics</a>
     </div>
-    <div class="toc-section">
-      <div class="toc-label">Ressources</div>
-      <a href="#errors" class="toc-item">Codes d'erreur</a>
-      <a href="#webhooks" class="toc-item">Webhooks</a>
-      <a href="#examples" class="toc-item">Exemples Maroc</a>
+    <div class="ng">
+      <div class="ngl">Ressources</div>
+      <a href="#webhooks" class="nl">Webhooks</a>
+      <a href="#sdk" class="nl">SDKs</a>
+      <a href="#examples" class="nl">🇲🇦 Exemples Maroc</a>
+      <a href="#errors" class="nl">Codes d'erreur</a>
     </div>
   </nav>
 </aside>
 
-<!-- MAIN CONTENT -->
 <main class="main">
 
   <!-- INTRO -->
-  <div id="intro" class="doc-header">
-    <div style="display:flex;gap:8px;margin-bottom:16px">
-      <span class="doc-badge"><span style="width:6px;height:6px;border-radius:50%;background:var(--green);display:inline-block"></span> API v1 Active</span>
-      <span class="doc-badge version-badge">Version 1.0.0</span>
+  <div id="intro">
+    <div class="hero-badges">
+      <span class="badge badge-green"><span style="width:6px;height:6px;border-radius:50%;background:var(--green);display:inline-block"></span> API v1 Active</span>
+      <span class="badge badge-orange">REST JSON</span>
+      <span class="badge badge-blue">🇲🇦 Maroc</span>
+      <span class="badge badge-purple">Sandbox disponible</span>
     </div>
-    <h1 class="doc-title">Documentation<br>Nook SMS API</h1>
-    <p class="doc-subtitle">La première infrastructure SMS moderne construite pour les développeurs marocains. Envoyez des SMS transactionnels, OTP et promotionnels en quelques lignes de code.</p>
-    <div style="display:flex;gap:12px;margin-top:20px">
-      <div style="background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:8px;padding:10px 16px;font-family:var(--mono);font-size:13px">
-        <span style="color:var(--muted)">Base URL: </span>
-        <span style="color:var(--accent2)">https://api.nook.ma</span>
-      </div>
-      <div style="background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:8px;padding:10px 16px;font-size:13px">
-        <span style="color:var(--muted)">Couverture: </span>
-        <span style="color:var(--green)">🇲🇦 Maroc • Maroc Telecom • Inwi • Orange</span>
-      </div>
+    <h1>Nook SMS<br>API Documentation</h1>
+    <p>La première infrastructure SMS moderne construite pour les développeurs marocains. Envoyez des SMS transactionnels, OTP et promotionnels en quelques lignes de code, avec des prix en dirhams.</p>
+    <div class="base-url">
+      <span class="base-label">Production:</span>
+      <span class="base-val" id="api-url-display">https://api-nook.up.railway.app</span>
+    </div>
+    <div class="base-url" style="border-color:rgba(168,85,247,.2)">
+      <span class="base-label">Sandbox:</span>
+      <span style="color:var(--purple)" id="sandbox-url-display">https://api-nook.up.railway.app/sandbox</span>
     </div>
   </div>
 
-  <div class="divider"></div>
+  <hr>
 
   <!-- QUICKSTART -->
   <div id="quickstart">
     <h2>🚀 Démarrage rapide</h2>
     <p>Envoyez votre premier SMS en moins de 5 minutes.</p>
-
-    <div class="steps">
-      <div class="step">
-        <div class="step-num">1</div>
-        <div class="step-body">
-          <h4>Créer un compte</h4>
-          <p>Inscrivez-vous et obtenez votre clé API instantanément.</p>
-          <div class="endpoint" style="margin-top:10px">
-            <span class="endpoint-method post">POST</span>
-            <span class="endpoint-path">/v1/clients/register</span>
+    <div class="step"><div class="step-n">1</div><div class="step-body"><h4>Créez un compte</h4><p>Inscrivez-vous et obtenez votre clé API instantanément.</p></div></div>
+    <div class="step">
+      <div class="step-n">2</div>
+      <div class="step-body">
+        <h4>Envoyez votre premier SMS</h4>
+        <div class="code-block">
+          <div class="code-tabs">
+            <button class="code-tab on" onclick="tab(this,'qs-js')">JavaScript</button>
+            <button class="code-tab" onclick="tab(this,'qs-py')">Python</button>
+            <button class="code-tab" onclick="tab(this,'qs-php')">PHP</button>
+            <button class="code-tab" onclick="tab(this,'qs-curl')">cURL</button>
           </div>
-        </div>
-      </div>
-      <div class="step">
-        <div class="step-num">2</div>
-        <div class="step-body">
-          <h4>Installer la librairie</h4>
-          <div class="code-block" style="margin-top:10px">
-            <div class="code-content active" style="padding:14px 18px">
-              <pre><span class="c-comment"># Node.js</span>
-<span class="c-func">npm install</span> axios
-
-<span class="c-comment"># Python</span>
-<span class="c-func">pip install</span> requests</pre>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="step">
-        <div class="step-num">3</div>
-        <div class="step-body">
-          <h4>Envoyer votre premier SMS</h4>
-          <div class="code-block" style="margin-top:10px">
-            <div class="code-tabs">
-              <button class="code-tab active" onclick="switchTab(this,'js-quick')">JavaScript</button>
-              <button class="code-tab" onclick="switchTab(this,'py-quick')">Python</button>
-              <button class="code-tab" onclick="switchTab(this,'curl-quick')">cURL</button>
-            </div>
-            <div id="js-quick" class="code-content active">
-              <button class="copy-code" onclick="copyCode(this)">Copier</button>
-              <pre><span class="c-keyword">const</span> response = <span class="c-keyword">await</span> <span class="c-func">fetch</span>(<span class="c-string">'https://api.nook.ma/v1/sms/send'</span>, {
-  method: <span class="c-string">'POST'</span>,
+          <div id="qs-js" class="code-pane on"><button class="copy-btn" onclick="cp(this)">Copier</button>
+<pre><span class="cc">// Node.js — npm install node-fetch</span>
+<span class="ck">const</span> response = <span class="ck">await</span> <span class="cf">fetch</span>(<span class="cs">'https://api-nook.up.railway.app/v1/sms/send'</span>, {
+  method: <span class="cs">'POST'</span>,
   headers: {
-    <span class="c-key">'Authorization'</span>: <span class="c-string">'Bearer nk_live_VOTRE_CLE_API'</span>,
-    <span class="c-key">'Content-Type'</span>: <span class="c-string">'application/json'</span>
+    <span class="cke">'Authorization'</span>: <span class="cs">'Bearer nk_live_VOTRE_CLE_API'</span>,
+    <span class="cke">'Content-Type'</span>: <span class="cs">'application/json'</span>
   },
-  body: <span class="c-func">JSON.stringify</span>({
-    <span class="c-key">to</span>: <span class="c-string">'+212612345678'</span>,
-    <span class="c-key">message</span>: <span class="c-string">'Votre code de vérification est: 4829'</span>
+  body: <span class="cf">JSON.stringify</span>({
+    to: <span class="cs">'+212612345678'</span>,
+    message: <span class="cs">'Votre code: 4829. Valide 10 min.'</span>
   })
 })
+<span class="ck">const</span> data = <span class="ck">await</span> response.<span class="cf">json</span>()
+<span class="cc">// { success: true, message_id: 'nk_xxx', cost: 0.20 }</span></pre></div>
+          <div id="qs-py" class="code-pane"><button class="copy-btn" onclick="cp(this)">Copier</button>
+<pre><span class="cc"># pip install requests</span>
+<span class="ck">import</span> requests
 
-<span class="c-keyword">const</span> data = <span class="c-keyword">await</span> response.<span class="c-func">json</span>()
-console.<span class="c-func">log</span>(data.message_id) <span class="c-comment">// nk_abc123...</span></pre>
-            </div>
-            <div id="py-quick" class="code-content">
-              <button class="copy-code" onclick="copyCode(this)">Copier</button>
-              <pre><span class="c-keyword">import</span> requests
-
-response = requests.<span class="c-func">post</span>(
-    <span class="c-string">'https://api.nook.ma/v1/sms/send'</span>,
+response = requests.<span class="cf">post</span>(
+    <span class="cs">'https://api-nook.up.railway.app/v1/sms/send'</span>,
     headers={
-        <span class="c-string">'Authorization'</span>: <span class="c-string">'Bearer nk_live_VOTRE_CLE_API'</span>,
-        <span class="c-string">'Content-Type'</span>: <span class="c-string">'application/json'</span>
+        <span class="cs">'Authorization'</span>: <span class="cs">'Bearer nk_live_VOTRE_CLE_API'</span>,
+        <span class="cs">'Content-Type'</span>: <span class="cs">'application/json'</span>
     },
     json={
-        <span class="c-string">'to'</span>: <span class="c-string">'+212612345678'</span>,
-        <span class="c-string">'message'</span>: <span class="c-string">'Votre code: 4829'</span>
+        <span class="cs">'to'</span>: <span class="cs">'+212612345678'</span>,
+        <span class="cs">'message'</span>: <span class="cs">'Votre code: 4829. Valide 10 min.'</span>
     }
 )
-data = response.<span class="c-func">json</span>()
-<span class="c-func">print</span>(data[<span class="c-string">'message_id'</span>])</pre>
-            </div>
-            <div id="curl-quick" class="code-content">
-              <button class="copy-code" onclick="copyCode(this)">Copier</button>
-              <pre><span class="c-func">curl</span> -X POST https://api.nook.ma/v1/sms/send \
-  -H <span class="c-string">"Authorization: Bearer nk_live_VOTRE_CLE_API"</span> \
-  -H <span class="c-string">"Content-Type: application/json"</span> \
-  -d <span class="c-string">'{"to":"+212612345678","message":"Code: 4829"}'</span></pre>
-            </div>
-          </div>
+data = response.<span class="cf">json</span>()
+<span class="cf">print</span>(data[<span class="cs">'message_id'</span>])</pre></div>
+          <div id="qs-php" class="code-pane"><button class="copy-btn" onclick="cp(this)">Copier</button>
+<pre><span class="cc">// PHP — using cURL</span>
+<span class="cv">$ch</span> = <span class="cf">curl_init</span>();
+<span class="cf">curl_setopt_array</span>(<span class="cv">$ch</span>, [
+    CURLOPT_URL => <span class="cs">'https://api-nook.up.railway.app/v1/sms/send'</span>,
+    CURLOPT_RETURNTRANSFER => <span class="ck">true</span>,
+    CURLOPT_POST => <span class="ck">true</span>,
+    CURLOPT_HTTPHEADER => [
+        <span class="cs">'Authorization: Bearer nk_live_VOTRE_CLE_API'</span>,
+        <span class="cs">'Content-Type: application/json'</span>
+    ],
+    CURLOPT_POSTFIELDS => <span class="cf">json_encode</span>([
+        <span class="cs">'to'</span> => <span class="cs">'+212612345678'</span>,
+        <span class="cs">'message'</span> => <span class="cs">'Votre code: 4829'</span>
+    ])
+]);
+<span class="cv">$response</span> = <span class="cf">json_decode</span>(<span class="cf">curl_exec</span>(<span class="cv">$ch</span>), <span class="ck">true</span>);</pre></div>
+          <div id="qs-curl" class="code-pane"><button class="copy-btn" onclick="cp(this)">Copier</button>
+<pre>curl -X POST https://api-nook.up.railway.app/v1/sms/send \
+  -H <span class="cs">"Authorization: Bearer nk_live_VOTRE_CLE_API"</span> \
+  -H <span class="cs">"Content-Type: application/json"</span> \
+  -d <span class="cs">'{"to":"+212612345678","message":"Code: 4829"}'</span></pre></div>
         </div>
       </div>
     </div>
   </div>
 
-  <div class="divider"></div>
+  <hr>
 
   <!-- AUTH -->
   <div id="auth">
     <h2>🔑 Authentification</h2>
-    <p>Toutes les requêtes nécessitent votre clé API dans le header <code style="font-family:var(--mono);font-size:12px;background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:4px">Authorization</code>.</p>
-    <div class="code-block">
-      <div class="code-content active" style="padding:14px 18px">
-        <pre>Authorization: Bearer nk_live_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</pre>
-      </div>
-    </div>
-    <div class="warn-box info-box">
-      ⚠️ Ne partagez jamais votre clé API. Stockez-la dans vos variables d'environnement, jamais dans votre code source.
-    </div>
+    <p>Toutes les requêtes nécessitent votre clé API dans le header <code style="font-family:var(--mono);font-size:12px;background:rgba(255,255,255,.06);padding:2px 6px;border-radius:4px">Authorization</code>.</p>
+    <div class="code-block"><div class="code-pane on" style="padding:13px 16px"><pre>Authorization: Bearer nk_live_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</pre></div></div>
+    <div class="info-box warn-box">⚠️ Ne partagez jamais votre clé API. Stockez-la dans vos variables d'environnement (<code style="font-family:var(--mono);font-size:11px">process.env.NOOK_API_KEY</code>), jamais dans votre code source ou votre dépôt Git.</div>
   </div>
 
-  <div class="divider"></div>
+  <hr>
 
   <!-- PRICING -->
   <div id="pricing">
-    <h2>💰 Tarifs</h2>
-    <p>Des prix transparents en dirhams. Pas de frais cachés, pas de conversions de devises.</p>
-
+    <h2>💰 Tarifs en DH</h2>
+    <p>Des prix transparents en dirhams. Pas de conversion de devises, pas de frais cachés. Facturation par virement bancaire.</p>
     <div class="pricing-grid">
-      <div class="pricing-card">
+      <div class="plan-card">
         <div class="plan-name">Basic</div>
-        <div class="plan-price"><sup>DH</sup>200 <span>/mois</span></div>
+        <div class="plan-price"><sup>DH</sup>200 <sub>/mois</sub></div>
         <div class="plan-desc">10 000 messages inclus</div>
-        <ul class="plan-features">
+        <ul class="plan-feat">
           <li>10 req/seconde</li>
           <li>SMS transactionnels</li>
           <li>Analytics de base</li>
           <li>Support email</li>
         </ul>
       </div>
-      <div class="pricing-card popular">
-        <div class="popular-badge">Populaire</div>
+      <div class="plan-card popular">
+        <div class="popular-tag">Populaire</div>
         <div class="plan-name">Standard</div>
-        <div class="plan-price"><sup>DH</sup>500 <span>/mois</span></div>
+        <div class="plan-price"><sup>DH</sup>500 <sub>/mois</sub></div>
         <div class="plan-desc">50 000 messages inclus</div>
-        <ul class="plan-features">
+        <ul class="plan-feat">
           <li>50 req/seconde</li>
-          <li>SMS + OTP</li>
-          <li>Analytics avancées</li>
+          <li>SMS + OTP intégré</li>
           <li>Webhooks temps réel</li>
+          <li>Analytics avancées</li>
           <li>Support prioritaire</li>
         </ul>
       </div>
-      <div class="pricing-card">
+      <div class="plan-card">
         <div class="plan-name">Enterprise</div>
-        <div class="plan-price"><span style="font-size:20px">Sur mesure</span></div>
+        <div class="plan-price" style="font-size:20px;margin-top:4px">Sur mesure</div>
         <div class="plan-desc">Volume illimité</div>
-        <ul class="plan-features">
+        <ul class="plan-feat">
           <li>200 req/seconde</li>
-          <li>SLA 99.9% garanti</li>
+          <li>SLA 99.9%</li>
           <li>Sender ID dédié</li>
           <li>Support téléphonique</li>
           <li>Facturation mensuelle</li>
         </ul>
       </div>
     </div>
-
     <h3>Prix par SMS</h3>
-    <div class="price-table">
-      <table>
-        <thead><tr><th>Opérateur</th><th>Prix / SMS</th><th>Notes</th></tr></thead>
-        <tbody>
-          <tr><td>🇲🇦 Maroc Telecom (IAM)</td><td style="font-family:var(--mono);font-weight:600;color:var(--accent2)">0.20 DH</td><td style="color:var(--muted);font-size:12px">Livraison en 2-5 secondes</td></tr>
-          <tr><td>🇲🇦 Inwi</td><td style="font-family:var(--mono);font-weight:600;color:var(--accent2)">0.20 DH</td><td style="color:var(--muted);font-size:12px">Livraison en 2-8 secondes</td></tr>
-          <tr><td>🇲🇦 Orange Maroc</td><td style="font-family:var(--mono);font-weight:600;color:var(--accent2)">0.20 DH</td><td style="color:var(--muted);font-size:12px">Livraison en 3-10 secondes</td></tr>
-          <tr><td>Réseau inconnu</td><td style="font-family:var(--mono);font-weight:600">0.25 DH</td><td style="color:var(--muted);font-size:12px">Délai variable</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p style="font-size:12px;color:var(--muted)">Crédits décomptés uniquement pour les envois réussis. Les échecs ne sont pas facturés.</p>
+    <div class="price-table"><table><thead><tr><th>Opérateur</th><th>Prix / SMS</th><th>Délai moyen</th></tr></thead><tbody>
+      <tr><td>🇲🇦 Maroc Telecom (IAM)</td><td style="font-family:var(--mono);font-weight:700;color:var(--a2)">0.20 DH</td><td style="color:var(--t2)">2–5 secondes</td></tr>
+      <tr><td>🇲🇦 Inwi</td><td style="font-family:var(--mono);font-weight:700;color:var(--a2)">0.20 DH</td><td style="color:var(--t2)">2–8 secondes</td></tr>
+      <tr><td>🇲🇦 Orange Maroc</td><td style="font-family:var(--mono);font-weight:700;color:var(--a2)">0.20 DH</td><td style="color:var(--t2)">3–10 secondes</td></tr>
+      <tr><td>Réseau inconnu</td><td style="font-family:var(--mono);font-weight:700">0.25 DH</td><td style="color:var(--t2)">Variable</td></tr>
+    </tbody></table></div>
+    <p style="font-size:12px;color:var(--t3)">Les crédits sont décomptés uniquement pour les envois réussis (statut <code style="font-family:var(--mono)">delivered</code>).</p>
   </div>
 
-  <div class="divider"></div>
+  <hr>
+
+  <!-- SANDBOX -->
+  <div id="sandbox">
+    <h2>🧪 Mode Sandbox</h2>
+    <div class="sandbox-card">
+      <h3>Testez sans envoyer de vrais SMS</h3>
+      <p>Le sandbox vous permet de développer et tester votre intégration sans consommer de crédits ni envoyer de vrais SMS. Les réponses sont identiques à la production.</p>
+      <div class="code-block"><div class="code-pane on" style="padding:14px 16px">
+<pre><span class="cc">// Utilisez le prefix sandbox dans votre clé API:</span>
+Authorization: Bearer <span class="cs">nk_test_</span>xxxxxxxxxxxxxxxx
+
+<span class="cc">// OU ajoutez le header sandbox:</span>
+<span class="cke">X-Nook-Sandbox</span>: <span class="cs">true</span>
+
+<span class="cc">// OU utilisez la base URL sandbox:</span>
+<span class="cs">https://api-nook.up.railway.app/sandbox/v1/sms/send</span></pre>
+      </div></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px">
+        <div style="background:rgba(0,0,0,.2);border:1px solid rgba(168,85,247,.15);border-radius:9px;padding:14px">
+          <div style="font-size:12px;font-weight:700;color:var(--purple);margin-bottom:6px">Sandbox</div>
+          <div style="font-size:12px;color:var(--t2);display:flex;flex-direction:column;gap:3px">
+            <span>✓ Réponses identiques à la prod</span>
+            <span>✓ Zéro crédit consommé</span>
+            <span>✓ SMS jamais envoyés</span>
+            <span>✓ Logs dans votre dashboard</span>
+            <span>✓ Simulation d'erreurs</span>
+          </div>
+        </div>
+        <div style="background:rgba(0,0,0,.2);border:1px solid rgba(249,115,22,.15);border-radius:9px;padding:14px">
+          <div style="font-size:12px;font-weight:700;color:var(--a2);margin-bottom:6px">Numéros de test</div>
+          <div style="font-size:12px;font-family:var(--mono);color:var(--t2);display:flex;flex-direction:column;gap:4px">
+            <span><span style="color:var(--green)">+212600000001</span> → Livré</span>
+            <span><span style="color:var(--blue)">+212600000002</span> → Envoyé</span>
+            <span><span style="color:var(--red)">+212600000003</span> → Échoué</span>
+            <span><span style="color:var(--yellow)">+212600000004</span> → En attente</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr>
 
   <!-- SEND SMS -->
   <div id="send">
     <h2>📤 Envoyer un SMS</h2>
-    <div class="endpoint">
-      <span class="endpoint-method post">POST</span>
-      <span class="endpoint-path">/v1/sms/send</span>
-      <span class="endpoint-desc">Envoyer un SMS à un numéro</span>
-    </div>
-
+    <div class="endpoint"><span class="ep-method post">POST</span><span class="ep-path">/v1/sms/send</span><span class="ep-desc">Envoyer un SMS à un numéro</span></div>
     <h3>Paramètres</h3>
-    <div class="params-table">
-      <table>
-        <thead><tr><th>Paramètre</th><th>Type</th><th>Requis</th><th>Description</th></tr></thead>
-        <tbody>
-          <tr><td class="param-name">to</td><td class="param-type">string</td><td><span class="required">Requis</span></td><td style="color:var(--muted);font-size:12px">Numéro marocain: +212XXXXXXXXX ou 0XXXXXXXXX</td></tr>
-          <tr><td class="param-name">message</td><td class="param-type">string</td><td><span class="required">Requis</span></td><td style="color:var(--muted);font-size:12px">Contenu du message (max 160 caractères)</td></tr>
-          <tr><td class="param-name">sender_id</td><td class="param-type">string</td><td><span class="optional-tag">Optionnel</span></td><td style="color:var(--muted);font-size:12px">Nom affiché (ex: MONAPP) — nécessite enregistrement</td></tr>
-          <tr><td class="param-name">message_type</td><td class="param-type">string</td><td><span class="optional-tag">Optionnel</span></td><td style="color:var(--muted);font-size:12px">transactional | promotional | otp (défaut: transactional)</td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    <h3>Exemple — OTP pour une app de livraison</h3>
-    <div class="code-block">
-      <div class="code-tabs">
-        <button class="code-tab active" onclick="switchTab(this,'js-send')">JavaScript</button>
-        <button class="code-tab" onclick="switchTab(this,'py-send')">Python</button>
-      </div>
-      <div id="js-send" class="code-content active">
-        <pre><span class="c-comment">// Exemple: Rapidio Delivery — vérification à la livraison</span>
-<span class="c-keyword">const</span> { data } = <span class="c-keyword">await</span> axios.<span class="c-func">post</span>(<span class="c-string">'https://api.nook.ma/v1/sms/send'</span>, {
-  to: <span class="c-string">'+212642738171'</span>,  <span class="c-comment">// Numéro du client</span>
-  message: <span class="c-string">`Votre livraison Rapidio est arrivée!\nCode de confirmation: 7392\nValable 10 minutes.`</span>,
-  sender_id: <span class="c-string">'RAPIDIO'</span>
-}, {
-  headers: { <span class="c-key">Authorization</span>: <span class="c-string">`Bearer ${process.env.NOOK_API_KEY}`</span> }
-})
-
-console.<span class="c-func">log</span>(data)
-<span class="c-comment">// { success: true, message_id: 'nk_xxx', cost: 0.20, ... }</span></pre>
-      </div>
-      <div id="py-send" class="code-content">
-        <pre><span class="c-comment"># Exemple: MedConnect — confirmation RDV médecin</span>
-<span class="c-keyword">import</span> os
-<span class="c-keyword">import</span> requests
-
-response = requests.<span class="c-func">post</span>(
-    <span class="c-string">'https://api.nook.ma/v1/sms/send'</span>,
-    headers={<span class="c-string">'Authorization'</span>: <span class="c-func">f</span><span class="c-string">"Bearer {os.environ['NOOK_API_KEY']}"</span>},
-    json={
-        <span class="c-string">'to'</span>: <span class="c-string">'+212661234567'</span>,
-        <span class="c-string">'message'</span>: <span class="c-string">'MedConnect: RDV confirmé avec Dr. Benali demain à 10h30. Clinique Al Qods, Casablanca.'</span>,
-        <span class="c-string">'sender_id'</span>: <span class="c-string">'MEDCNNCT'</span>
-    }
-)</pre>
-      </div>
-    </div>
-
-    <h3>Réponse réussie</h3>
-    <div class="response-block">
-      <pre>{
-  <span class="c-key">"success"</span>: <span class="c-val">true</span>,
-  <span class="c-key">"message_id"</span>: <span class="c-string">"nk_9032844707704de1a0b7"</span>,
-  <span class="c-key">"to"</span>: <span class="c-string">"+212642738171"</span>,
-  <span class="c-key">"network"</span>: <span class="c-string">"maroc_telecom"</span>,
-  <span class="c-key">"status"</span>: <span class="c-string">"sent"</span>,
-  <span class="c-key">"cost"</span>: <span class="c-val">0.20</span>,
-  <span class="c-key">"remaining_credits"</span>: <span class="c-val">324.80</span>,
-  <span class="c-key">"currency"</span>: <span class="c-string">"DH"</span>
-}</pre>
-    </div>
+    <div class="params-table"><table><thead><tr><th>Paramètre</th><th>Type</th><th>Requis</th><th>Description</th></tr></thead><tbody>
+      <tr><td class="pname">to</td><td class="ptype">string</td><td><span class="preq">Requis</span></td><td style="color:var(--t2)">Numéro marocain: +212XXXXXXXXX ou 0XXXXXXXXX</td></tr>
+      <tr><td class="pname">message</td><td class="ptype">string</td><td><span class="preq">Requis</span></td><td style="color:var(--t2)">Contenu du SMS (max 160 caractères)</td></tr>
+      <tr><td class="pname">sender_id</td><td class="ptype">string</td><td><span class="popt">Optionnel</span></td><td style="color:var(--t2)">Nom affiché (ex: MONAPP) — max 11 chars, nécessite enregistrement AT</td></tr>
+      <tr><td class="pname">message_type</td><td class="ptype">string</td><td><span class="popt">Optionnel</span></td><td style="color:var(--t2)">transactional | promotional | otp (défaut: transactional)</td></tr>
+    </tbody></table></div>
+    <h3>Réponse</h3>
+    <div class="res-block"><pre>{
+  <span class="cke">"success"</span>: <span class="cv">true</span>,
+  <span class="cke">"message_id"</span>: <span class="cs">"nk_9032844707704de1a0b7"</span>,
+  <span class="cke">"to"</span>: <span class="cs">"+212642738171"</span>,
+  <span class="cke">"network"</span>: <span class="cs">"maroc_telecom"</span>,
+  <span class="cke">"status"</span>: <span class="cs">"sent"</span>,
+  <span class="cke">"cost"</span>: <span class="cv">0.20</span>,
+  <span class="cke">"remaining_credits"</span>: <span class="cv">324.80</span>,
+  <span class="cke">"currency"</span>: <span class="cs">"DH"</span>
+}</pre></div>
   </div>
 
-  <div class="divider"></div>
+  <hr>
+
+  <!-- BULK -->
+  <div id="bulk">
+    <h2>📦 Envoi en masse</h2>
+    <div class="endpoint"><span class="ep-method post">POST</span><span class="ep-path">/v1/sms/bulk</span><span class="ep-desc">Envoyer à plusieurs numéros</span></div>
+    <div class="code-block">
+      <div class="code-tabs"><button class="code-tab on" onclick="tab(this,'bulk-js')">JavaScript</button><button class="code-tab" onclick="tab(this,'bulk-py')">Python</button></div>
+      <div id="bulk-js" class="code-pane on"><button class="copy-btn" onclick="cp(this)">Copier</button>
+<pre><span class="cc">// Campagne promotionnelle — ex: Hmizate</span>
+<span class="ck">const</span> { data } = <span class="ck">await</span> axios.<span class="cf">post</span>(<span class="cs">'/v1/sms/bulk'</span>, {
+  recipients: [<span class="cs">'+212612345678'</span>, <span class="cs">'+212698765432'</span>, <span class="cs">'+212670123456'</span>],
+  message: <span class="cs">`🔥 FLASH SALE!\n-50% sur l'électro CE SOIR seulement\nJusqu'à minuit: hmizate.ma/flash`</span>,
+  sender_id: <span class="cs">'HMIZATE'</span>,
+  message_type: <span class="cs">'promotional'</span>
+}, { headers })
+
+<span class="cc">// Réponse immédiate avec job_id</span>
+<span class="cc">// { accepted: true, job_id: 'job_xxx', total: 3, queued: 3 }</span>
+
+<span class="cc">// Suivre la progression</span>
+<span class="ck">const</span> status = <span class="ck">await</span> axios.<span class="cf">get</span>(<span class="cs">`/v1/sms/bulk/${data.job_id}`</span>, { headers })
+<span class="cc">// { progress: 85, sent: 255, failed: 2, total: 300 }</span></pre></div>
+      <div id="bulk-py" class="code-pane"><button class="copy-btn" onclick="cp(this)">Copier</button>
+<pre>response = requests.<span class="cf">post</span>(
+    <span class="cs">'/v1/sms/bulk'</span>,
+    headers=headers,
+    json={
+        <span class="cs">'recipients'</span>: [<span class="cs">'+212612345678'</span>, <span class="cs">'+212698765432'</span>],
+        <span class="cs">'message'</span>: <span class="cs">'Votre message ici'</span>,
+        <span class="cs">'message_type'</span>: <span class="cs">'promotional'</span>
+    }
+)</pre></div>
+    </div>
+    <div class="info-box">ℹ️ Les envois en masse sont traités par une file d'attente Redis. Vous recevez immédiatement un <code style="font-family:var(--mono);font-size:11px">job_id</code> pour suivre la progression. Le webhook est déclenché à la fin.</div>
+  </div>
+
+  <hr>
 
   <!-- OTP -->
   <div id="otp-send">
     <h2>🔐 OTP — Codes de vérification</h2>
-    <p>Envoyez et vérifiez des codes OTP sécurisés. Les codes sont générés, hashés, et expirés automatiquement.</p>
-
-    <div class="endpoint">
-      <span class="endpoint-method post">POST</span>
-      <span class="endpoint-path">/v1/otp/send</span>
-      <span class="endpoint-desc">Générer et envoyer un code OTP</span>
-    </div>
-
+    <p>Envoyez et vérifiez des codes OTP sécurisés en 2 étapes. Les codes sont générés côté serveur, hashés, et expirés automatiquement après 10 minutes.</p>
+    <div class="endpoint"><span class="ep-method post">POST</span><span class="ep-path">/v1/otp/send</span><span class="ep-desc">Générer et envoyer un OTP</span></div>
+    <div class="endpoint"><span class="ep-method post">POST</span><span class="ep-path">/v1/otp/verify</span><span class="ep-desc">Vérifier un code OTP</span></div>
     <div class="code-block">
-      <div class="code-content active" style="padding:20px">
-        <pre><span class="c-comment">// Étape 1: Envoyer l'OTP au numéro du client</span>
-<span class="c-keyword">const</span> { data } = <span class="c-keyword">await</span> axios.<span class="c-func">post</span>(<span class="c-string">'/v1/otp/send'</span>, {
-  to: <span class="c-string">'+212661234567'</span>,
-  purpose: <span class="c-string">'login'</span>,  <span class="c-comment">// login | verification | payment</span>
-  language: <span class="c-string">'fr'</span>        <span class="c-comment">// fr | ar</span>
+      <div class="code-tabs"><button class="code-tab on" onclick="tab(this,'otp-js')">JavaScript</button><button class="code-tab" onclick="tab(this,'otp-py')">Python</button></div>
+      <div id="otp-js" class="code-pane on"><button class="copy-btn" onclick="cp(this)">Copier</button>
+<pre><span class="cc">// ÉTAPE 1: Envoyer l'OTP</span>
+<span class="ck">const</span> { data: otpData } = <span class="ck">await</span> axios.<span class="cf">post</span>(<span class="cs">'/v1/otp/send'</span>, {
+  to: <span class="cs">'+212661234567'</span>,
+  purpose: <span class="cs">'login'</span>,  <span class="cc">// login | verification | payment</span>
+  language: <span class="cs">'fr'</span>         <span class="cc">// fr | ar | en</span>
 }, { headers })
 
-<span class="c-comment">// Stocker l'otp_id pour la vérification</span>
-<span class="c-keyword">const</span> otpId = data.otp_id
+<span class="cc">// SMS reçu: "Code de connexion Nook: 482910. Valide 10 min."</span>
+<span class="cc">// Sauvegarder otp_id en session</span>
+<span class="ck">const</span> otpId = otpData.otp_id
 
-<span class="c-comment">// SMS reçu: "Code de connexion: 482910. Valide 10 min."</span>
-
-<span class="c-comment">// Étape 2: Vérifier le code entré par l'utilisateur</span>
-<span class="c-keyword">const</span> verify = <span class="c-keyword">await</span> axios.<span class="c-func">post</span>(<span class="c-string">'/v1/otp/verify'</span>, {
+<span class="cc">// ÉTAPE 2: Vérifier le code entré par l'utilisateur</span>
+<span class="ck">const</span> { data: result } = <span class="ck">await</span> axios.<span class="cf">post</span>(<span class="cs">'/v1/otp/verify'</span>, {
   otp_id: otpId,
-  phone: <span class="c-string">'+212661234567'</span>,
-  code: <span class="c-string">'482910'</span>  <span class="c-comment">// Code saisi par l'utilisateur</span>
+  phone: <span class="cs">'+212661234567'</span>,
+  code: <span class="cs">'482910'</span>
 }, { headers })
 
-<span class="c-keyword">if</span> (verify.data.valid) {
-  <span class="c-comment">// ✓ Authentification réussie</span>
-}</pre>
-      </div>
+<span class="ck">if</span> (result.valid) {
+  <span class="cc">// ✓ Utilisateur authentifié — créer la session</span>
+  createUserSession(result.phone)
+}</pre></div>
+      <div id="otp-py" class="code-pane"><button class="copy-btn" onclick="cp(this)">Copier</button>
+<pre><span class="cc"># Étape 1: Envoyer</span>
+otp = requests.<span class="cf">post</span>(<span class="cs">'/v1/otp/send'</span>,headers=h,json={
+    <span class="cs">'to'</span>:<span class="cs">'+212661234567'</span>,<span class="cs">'purpose'</span>:<span class="cs">'login'</span>,<span class="cs">'language'</span>:<span class="cs">'fr'</span>
+}).<span class="cf">json</span>()
+
+<span class="cc"># Étape 2: Vérifier</span>
+result = requests.<span class="cf">post</span>(<span class="cs">'/v1/otp/verify'</span>,headers=h,json={
+    <span class="cs">'otp_id'</span>: otp[<span class="cs">'otp_id'</span>],
+    <span class="cs">'phone'</span>: <span class="cs">'+212661234567'</span>,
+    <span class="cs">'code'</span>: user_input
+}).<span class="cf">json</span>()
+<span class="ck">if</span> result[<span class="cs">'valid'</span>]:
+    <span class="cf">create_session</span>()</pre></div>
     </div>
   </div>
 
-  <div class="divider"></div>
+  <hr>
+
+  <!-- WEBHOOKS -->
+  <div id="webhooks">
+    <h2>🔔 Webhooks</h2>
+    <p>Recevez des notifications en temps réel quand le statut d'un message change. Configurez votre URL dans votre compte.</p>
+    <h3>Événements disponibles</h3>
+    <div class="price-table"><table><thead><tr><th>Événement</th><th>Déclenché quand</th></tr></thead><tbody>
+      <tr><td class="pname" style="font-size:12px">message.delivered</td><td style="color:var(--t2)">SMS livré au destinataire</td></tr>
+      <tr><td class="pname" style="font-size:12px">message.failed</td><td style="color:var(--t2)">Échec d'envoi (numéro invalide, etc.)</td></tr>
+      <tr><td class="pname" style="font-size:12px">bulk.completed</td><td style="color:var(--t2)">Campagne en masse terminée</td></tr>
+      <tr><td class="pname" style="font-size:12px">credits.low</td><td style="color:var(--t2)">Crédits passent sous le seuil configuré</td></tr>
+      <tr><td class="pname" style="font-size:12px">otp.verified</td><td style="color:var(--t2)">Code OTP vérifié avec succès</td></tr>
+    </tbody></table></div>
+    <h3>Payload webhook</h3>
+    <div class="res-block"><pre>{
+  <span class="cke">"event"</span>: <span class="cs">"message.delivered"</span>,
+  <span class="cke">"timestamp"</span>: <span class="cs">"2026-07-01T10:23:44.000Z"</span>,
+  <span class="cke">"data"</span>: {
+    <span class="cke">"message_id"</span>: <span class="cs">"nk_9032844707704de1a0b7"</span>,
+    <span class="cke">"to"</span>: <span class="cs">"+212642738171"</span>,
+    <span class="cke">"status"</span>: <span class="cs">"delivered"</span>,
+    <span class="cke">"network"</span>: <span class="cs">"maroc_telecom"</span>,
+    <span class="cke">"cost"</span>: <span class="cv">0.20</span>
+  }
+}</pre></div>
+    <div class="info-box warn-box">⚠️ Vérifiez toujours la signature webhook avec le header <code style="font-family:var(--mono);font-size:11px">X-Nook-Signature</code> pour éviter les requêtes frauduleuses.</div>
+  </div>
+
+  <hr>
+
+  <!-- SDK -->
+  <div id="sdk">
+    <h2>📦 SDKs officiels</h2>
+    <p>Des librairies officielles pour les langages les plus utilisés par les développeurs marocains.</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0">
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px">
+        <div style="font-size:15px;font-weight:700;margin-bottom:4px">Node.js SDK</div>
+        <div style="font-size:12px;color:var(--t2);margin-bottom:12px">npm install nook-sms</div>
+        <div class="code-block" style="margin:0"><div class="code-pane on" style="padding:13px 15px">
+<pre><span class="ck">const</span> Nook = <span class="cf">require</span>(<span class="cs">'nook-sms'</span>)
+<span class="ck">const</span> client = <span class="ck">new</span> Nook(<span class="cs">'nk_live_xxx'</span>)
+<span class="ck">await</span> client.sms.<span class="cf">send</span>({
+  to: <span class="cs">'+212612345678'</span>,
+  message: <span class="cs">'Code: 4829'</span>
+})</pre></div></div>
+      </div>
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px">
+        <div style="font-size:15px;font-weight:700;margin-bottom:4px">Python SDK</div>
+        <div style="font-size:12px;color:var(--t2);margin-bottom:12px">pip install nook-sms</div>
+        <div class="code-block" style="margin:0"><div class="code-pane on" style="padding:13px 15px">
+<pre><span class="ck">from</span> nook_sms <span class="ck">import</span> NookClient
+client = <span class="cf">NookClient</span>(<span class="cs">'nk_live_xxx'</span>)
+client.sms.<span class="cf">send</span>(
+    to=<span class="cs">'+212612345678'</span>,
+    message=<span class="cs">'Code: 4829'</span>
+)</pre></div></div>
+      </div>
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px">
+        <div style="font-size:15px;font-weight:700;margin-bottom:4px">PHP SDK</div>
+        <div style="font-size:12px;color:var(--t2);margin-bottom:12px">composer require nook/sms</div>
+        <div class="code-block" style="margin:0"><div class="code-pane on" style="padding:13px 15px">
+<pre><span class="cv">$nook</span> = <span class="ck">new</span> NookSMS\<span class="cf">Client</span>(<span class="cs">'nk_live_xxx'</span>);
+<span class="cv">$nook</span>->sms-><span class="cf">send</span>([
+    <span class="cs">'to'</span> => <span class="cs">'+212612345678'</span>,
+    <span class="cs">'message'</span> => <span class="cs">'Code: 4829'</span>
+]);</pre></div></div>
+      </div>
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px">
+        <div style="font-size:15px;font-weight:700;margin-bottom:4px">Laravel Package</div>
+        <div style="font-size:12px;color:var(--t2);margin-bottom:12px">composer require nook/laravel-sms</div>
+        <div class="code-block" style="margin:0"><div class="code-pane on" style="padding:13px 15px">
+<pre><span class="cc">// config/services.php</span>
+<span class="cs">'nook'</span> => [
+  <span class="cs">'key'</span> => <span class="cf">env</span>(<span class="cs">'NOOK_API_KEY'</span>)
+]
+<span class="cc">// Dans votre contrôleur</span>
+<span class="cf">NookSMS</span>::<span class="cf">send</span>(phone: <span class="cs">$user->phone</span>, message: <span class="cs">'OTP: 4829'</span>);</pre></div></div>
+      </div>
+    </div>
+    <div class="info-box">ℹ️ Les SDKs sont en cours de développement. En attendant, utilisez directement l'API REST — elle fonctionne avec n'importe quel langage.</div>
+  </div>
+
+  <hr>
 
   <!-- MOROCCAN EXAMPLES -->
   <div id="examples">
     <h2>🇲🇦 Cas d'usage marocains</h2>
-    <p>Exemples concrets pour les types d'entreprises au Maroc.</p>
+    <p>Exemples concrets pour les entreprises au Maroc.</p>
 
-    <h3>🚗 Application de livraison (ex: Glovo Maroc)</h3>
-    <div class="code-block">
-      <div class="code-content active" style="padding:20px">
-        <pre><span class="c-comment">// 1. Confirmation de commande</span>
-<span class="c-keyword">await</span> <span class="c-func">sendSMS</span>(client.phone, <span class="c-string">`Commande #${order.id} confirmée ✓\nEstimation: ${order.eta} min\nTotal: ${order.total} DH`</span>)
-
-<span class="c-comment">// 2. Livreur en route</span>
-<span class="c-keyword">await</span> <span class="c-func">sendSMS</span>(client.phone, <span class="c-string">`Votre livreur est en route 🛵\nCode de confirmation: ${order.code}`</span>)
-
-<span class="c-comment">// 3. Livraison effectuée</span>
-<span class="c-keyword">await</span> <span class="c-func">sendSMS</span>(client.phone, <span class="c-string">`Livraison effectuée ✓\nMerci de votre confiance!\nNotez votre livreur sur l'app.`</span>)</pre>
-      </div>
-    </div>
-
-    <h3>🏦 Application bancaire / CIH / Attijariwafa</h3>
-    <div class="code-block">
-      <div class="code-content active" style="padding:20px">
-        <pre><span class="c-comment">// Virement reçu</span>
-<span class="c-keyword">await</span> <span class="c-func">sendSMS</span>(client.phone, <span class="c-string">`CIH Bank: Virement reçu de 2,500.00 MAD\nSolde: 8,750.00 MAD\nRéf: ${ref}`</span>)
-
-<span class="c-comment">// OTP pour connexion sécurisée</span>
-<span class="c-keyword">const</span> otp = <span class="c-keyword">await</span> <span class="c-func">sendOTP</span>({
+    <div class="morocco-card">
+      <div class="title">🚗 Application de livraison — Rapidio / Glovo Maroc</div>
+      <div class="desc">Notifications de commande et confirmation de livraison</div>
+      <div class="code-block"><div class="code-pane on" style="padding:16px 18px"><button class="copy-btn" onclick="cp(this)">Copier</button>
+<pre><span class="cc">// 1. Confirmation commande</span>
+<span class="ck">await</span> nook.sms.<span class="cf">send</span>({
   to: client.phone,
-  purpose: <span class="c-string">'login'</span>,
-  language: <span class="c-string">'ar'</span>  <span class="c-comment">// رمز بالعربية</span>
-})</pre>
-      </div>
+  message: <span class="cs">`Commande #${order.id} confirmée ✓\nEstimation: ${order.eta} min — ${order.total} DH`</span>,
+  sender_id: <span class="cs">'RAPIDIO'</span>
+})
+
+<span class="cc">// 2. Livreur en route</span>
+<span class="ck">await</span> nook.sms.<span class="cf">send</span>({
+  to: client.phone,
+  message: <span class="cs">`Votre livreur arrive dans ${eta} minutes 🛵\nCode de remise: ${order.code}`</span>
+})
+
+<span class="cc">// 3. OTP confirmation livraison</span>
+<span class="ck">const</span> otp = <span class="ck">await</span> nook.otp.<span class="cf">send</span>({ to: client.phone, purpose: <span class="cs">'delivery'</span> })
+<span class="cc">// Le client donne le code au livreur</span></pre></div></div>
     </div>
 
-    <h3>🛒 E-commerce (ex: Hmizate, Jumia Maroc)</h3>
-    <div class="code-block">
-      <div class="code-content active" style="padding:20px">
-        <pre><span class="c-comment">// Promotion flash</span>
-<span class="c-keyword">await</span> axios.<span class="c-func">post</span>(<span class="c-string">'/v1/sms/bulk'</span>, {
-  recipients: subscribers.<span class="c-func">map</span>(s => s.phone),  <span class="c-comment">// Liste de clients</span>
-  message: <span class="c-string">`🔥 FLASH SALE Hmizate!\n-50% sur l'électro CE SOIR seulement\nJusqu'à minuit: hmizate.ma/flash`</span>,
-  sender_id: <span class="c-string">'HMIZATE'</span>
-}, { headers })
+    <div class="morocco-card">
+      <div class="title">🏦 Banque / Fintech — CIH Bank, Barid Bank, CMI</div>
+      <div class="desc">Alertes transactions et authentification sécurisée</div>
+      <div class="code-block"><div class="code-pane on" style="padding:16px 18px"><button class="copy-btn" onclick="cp(this)">Copier</button>
+<pre><span class="cc">// Alerte virement</span>
+<span class="ck">await</span> nook.sms.<span class="cf">send</span>({
+  to: account.phone,
+  message: <span class="cs">`CIH: Virement reçu 2,500.00 MAD\nSolde: 8,750.00 MAD\nRéf: ${ref}`</span>,
+  message_type: <span class="cs">'transactional'</span>
+})
 
-<span class="c-comment">// Réponse immédiate avec job_id</span>
-<span class="c-comment">// { accepted: true, job_id: 'xxx', total_recipients: 15420 }</span></pre>
-      </div>
+<span class="cc">// OTP connexion banque en ligne (langue arabe)</span>
+<span class="ck">const</span> otp = <span class="ck">await</span> nook.otp.<span class="cf">send</span>({
+  to: user.phone,
+  purpose: <span class="cs">'banking_login'</span>,
+  language: <span class="cs">'ar'</span>  <span class="cc">// رمز التحقق</span>
+})</pre></div></div>
+    </div>
+
+    <div class="morocco-card">
+      <div class="title">🏥 Clinique / Hôpital — MedConnect</div>
+      <div class="desc">Rappels de rendez-vous et résultats d'analyses</div>
+      <div class="code-block"><div class="code-pane on" style="padding:16px 18px"><button class="copy-btn" onclick="cp(this)">Copier</button>
+<pre><span class="cc">// Rappel RDV automatique (1 jour avant)</span>
+<span class="ck">await</span> nook.sms.<span class="cf">send</span>({
+  to: patient.phone,
+  message: <span class="cs">`MedConnect: RDV demain ${rdv.time}\nDr. ${rdv.doctor} — Clinique Al Qods, Casablanca\nAnnuler: 0522-xxxxxx`</span>
+})
+
+<span class="cc">// Résultats disponibles</span>
+<span class="ck">await</span> nook.sms.<span class="cf">send</span>({
+  to: patient.phone,
+  message: <span class="cs">`Vos résultats d'analyses sont disponibles.\nConsultez: medconnect.ma/resultats\nCode: ${patient.code}`</span>
+})</pre></div></div>
+    </div>
+
+    <div class="morocco-card">
+      <div class="title">🛒 E-commerce — Hmizate, Jumia Maroc</div>
+      <div class="desc">Campagnes promotionnelles et notifications commandes</div>
+      <div class="code-block"><div class="code-pane on" style="padding:16px 18px"><button class="copy-btn" onclick="cp(this)">Copier</button>
+<pre><span class="cc">// Flash sale — envoi en masse à 15,000 clients</span>
+<span class="ck">const</span> job = <span class="ck">await</span> nook.sms.<span class="cf">sendBulk</span>({
+  recipients: await db.<span class="cf">getAllSubscribers</span>(),
+  message: <span class="cs">'🔥 FLASH SALE Hmizate!\n-50% électro CE SOIR jusqu\'à minuit\nCode: FLASH50 → hmizate.ma'</span>,
+  message_type: <span class="cs">'promotional'</span>
+})
+<span class="cf">console.log</span>(<span class="cs">`Envoi de ${job.total} SMS en cours...`</span>)</pre></div></div>
     </div>
   </div>
 
-  <div class="divider"></div>
+  <hr>
 
   <!-- ERRORS -->
   <div id="errors">
     <h2>⚠️ Codes d'erreur</h2>
-    <div class="price-table">
-      <table>
-        <thead><tr><th>Code HTTP</th><th>Code erreur</th><th>Description</th><th>Solution</th></tr></thead>
-        <tbody>
-          <tr><td style="font-family:var(--mono);color:var(--yellow)">400</td><td style="font-family:var(--mono);font-size:11px">INVALID_PHONE</td><td style="font-size:12px;color:var(--muted)">Numéro invalide</td><td style="font-size:12px;color:var(--muted)">Utilisez +212XXXXXXXXX ou 0XXXXXXXXX</td></tr>
-          <tr><td style="font-family:var(--mono);color:var(--yellow)">400</td><td style="font-family:var(--mono);font-size:11px">MESSAGE_TOO_LONG</td><td style="font-size:12px;color:var(--muted)">Message > 160 chars</td><td style="font-size:12px;color:var(--muted)">Réduire le message ou utiliser /bulk</td></tr>
-          <tr><td style="font-family:var(--mono);color:var(--red)">401</td><td style="font-family:var(--mono);font-size:11px">INVALID_API_KEY</td><td style="font-size:12px;color:var(--muted)">Clé API invalide</td><td style="font-size:12px;color:var(--muted)">Vérifier la clé dans votre dashboard</td></tr>
-          <tr><td style="font-family:var(--mono);color:var(--red)">402</td><td style="font-family:var(--mono);font-size:11px">NO_CREDITS</td><td style="font-size:12px;color:var(--muted)">Crédits insuffisants</td><td style="font-size:12px;color:var(--muted)">Recharger sur nook.ma/billing</td></tr>
-          <tr><td style="font-family:var(--mono);color:var(--yellow)">429</td><td style="font-family:var(--mono);font-size:11px">RATE_LIMIT</td><td style="font-size:12px;color:var(--muted)">Trop de requêtes</td><td style="font-size:12px;color:var(--muted)">Réduire la fréquence selon votre plan</td></tr>
-          <tr><td style="font-family:var(--mono);color:var(--red)">502</td><td style="font-family:var(--mono);font-size:11px">SEND_FAILED</td><td style="font-size:12px;color:var(--muted)">Échec passerelle</td><td style="font-size:12px;color:var(--muted)">Réessayer ou contacter support</td></tr>
-        </tbody>
-      </table>
-    </div>
+    <div class="error-table"><table><thead><tr><th>HTTP</th><th>Code erreur</th><th>Description</th><th>Solution</th></tr></thead><tbody>
+      <tr><td style="font-family:var(--mono);color:var(--yellow)">400</td><td style="font-family:var(--mono);font-size:11px;color:var(--a2)">INVALID_PHONE</td><td style="color:var(--t2)">Numéro invalide</td><td style="color:var(--t2);font-size:12px">Utilisez +212XXXXXXXXX</td></tr>
+      <tr><td style="font-family:var(--mono);color:var(--yellow)">400</td><td style="font-family:var(--mono);font-size:11px;color:var(--a2)">MESSAGE_TOO_LONG</td><td style="color:var(--t2)">Message > 160 chars</td><td style="color:var(--t2);font-size:12px">Réduire ou utiliser /bulk</td></tr>
+      <tr><td style="font-family:var(--mono);color:var(--red)">401</td><td style="font-family:var(--mono);font-size:11px;color:var(--a2)">INVALID_API_KEY</td><td style="color:var(--t2)">Clé API invalide</td><td style="color:var(--t2);font-size:12px">Vérifier dans le dashboard</td></tr>
+      <tr><td style="font-family:var(--mono);color:var(--red)">402</td><td style="font-family:var(--mono);font-size:11px;color:var(--a2)">NO_CREDITS</td><td style="color:var(--t2)">Crédits insuffisants</td><td style="color:var(--t2);font-size:12px">Recharger sur nook.ma</td></tr>
+      <tr><td style="font-family:var(--mono);color:var(--yellow)">429</td><td style="font-family:var(--mono);font-size:11px;color:var(--a2)">RATE_LIMIT</td><td style="color:var(--t2)">Trop de requêtes</td><td style="color:var(--t2);font-size:12px">Réduire fréquence selon plan</td></tr>
+      <tr><td style="font-family:var(--mono);color:var(--red)">502</td><td style="font-family:var(--mono);font-size:11px;color:var(--a2)">GATEWAY_ERROR</td><td style="color:var(--t2)">Erreur passerelle</td><td style="color:var(--t2);font-size:12px">Réessayer dans 30s</td></tr>
+    </tbody></table></div>
   </div>
 
-  <div class="divider"></div>
+  <hr>
 
-  <div style="text-align:center;padding:40px 0;color:var(--muted)">
-    <div style="font-size:24px;margin-bottom:8px">🇲🇦</div>
-    <div style="font-size:15px;font-weight:500;color:var(--text)">Construit pour les développeurs marocains</div>
-    <div style="font-size:13px;margin-top:6px">Questions? <a href="mailto:dev@nook.ma" style="color:var(--accent2)">dev@nook.ma</a></div>
+  <div style="text-align:center;padding:36px 0 20px;color:var(--t2)">
+    <div style="font-size:22px;margin-bottom:8px">🇲🇦</div>
+    <div style="font-size:15px;font-weight:600;color:var(--text)">Construit pour les développeurs marocains</div>
+    <div style="font-size:13px;margin-top:6px">Questions? <a href="mailto:dev@nook.ma" style="color:var(--a2)">dev@nook.ma</a></div>
   </div>
 
 </main>
 
 <script>
-function switchTab(btn, id){
-  const block = btn.closest('.code-block')
-  block.querySelectorAll('.code-tab').forEach(t=>t.classList.remove('active'))
-  block.querySelectorAll('.code-content').forEach(c=>c.classList.remove('active'))
-  btn.classList.add('active')
-  document.getElementById(id).classList.add('active')
+const CFG=window.NOOK_CONFIG||{};
+if(CFG.API_BASE){document.getElementById('api-url-display').textContent=CFG.API_BASE;document.getElementById('sandbox-url-display').textContent=CFG.API_BASE+'/sandbox';}
+let L=localStorage.getItem('nkl')||'fr';
+function setL(l){L=l;localStorage.setItem('nkl',l);document.querySelectorAll('.lb').forEach(b=>b.classList.toggle('on',b.textContent===l.toUpperCase()));document.documentElement.lang=l;}
+function tab(btn,id){
+  const block=btn.closest('.code-block');
+  block.querySelectorAll('.code-tab').forEach(t=>t.classList.remove('on'));
+  block.querySelectorAll('.code-pane').forEach(p=>p.classList.remove('on'));
+  btn.classList.add('on');document.getElementById(id).classList.add('on');
 }
-function copyCode(btn){
-  const code = btn.closest('.code-content').querySelector('pre').textContent
-  navigator.clipboard.writeText(code)
-  btn.textContent = 'Copié ✓'
-  setTimeout(()=>btn.textContent='Copier',2000)
+function cp(btn){
+  const code=btn.closest('.code-pane').querySelector('pre').textContent;
+  navigator.clipboard.writeText(code);
+  btn.textContent='Copié ✓';setTimeout(()=>btn.textContent='Copier',2000);
 }
-// Active TOC on scroll
+// Active TOC link on scroll
+const sections=[...document.querySelectorAll('[id]')];
 window.addEventListener('scroll',()=>{
-  document.querySelectorAll('[id]').forEach(el=>{
-    if(el.getBoundingClientRect().top < 100 && el.getBoundingClientRect().top > -200){
-      document.querySelectorAll('.toc-item').forEach(t=>t.classList.remove('active'))
-      const link = document.querySelector(`.toc-item[href="#${el.id}"]`)
-      if(link) link.classList.add('active')
-    }
-  })
-})
+  const cur=sections.filter(s=>s.getBoundingClientRect().top<90).pop();
+  if(cur){document.querySelectorAll('.nl').forEach(l=>l.classList.toggle('on',l.getAttribute('href')==='#'+cur.id));}
+});
+setL(L);
 </script>
 </body>
 </html>
